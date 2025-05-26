@@ -22,7 +22,10 @@ public class PlayerMovement : MonoBehaviour
     public float minRadius = 1f;   // HP 0일 때 최소 반경
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
 
-    void Start ()
+    [Header("Managers")]
+    public StageManager stageManager;
+
+    void Start()
     {
         PlayerStatReload();
         currentHp = maxHp;
@@ -72,6 +75,10 @@ public class PlayerMovement : MonoBehaviour
         }
         #endregion
     }
+    void FixedUpdate()
+    {
+        rb.velocity = moveInput * moveSpeed;
+    }
 
     void Flip()
     {
@@ -95,8 +102,11 @@ public class PlayerMovement : MonoBehaviour
         damage = playerData.damage;
     }
 
-    void FixedUpdate()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        rb.velocity = moveInput * moveSpeed;
+        if (collision.CompareTag("NextStage"))
+        {
+            stageManager.NextStage();   
+        }
     }
 }
