@@ -15,11 +15,13 @@ public enum ItemType
 }
 
 [CreateAssetMenu]
-public class ItemSO : ScriptableObject
+public class ItemData : ScriptableObject
 {
     [Header("Info")]
     public string ItemID;
     public string ItemName;
+    public string description;
+    public Sprite icon;
     public ItemType ItemType;
     public ArtifactType ArtifactType;
 }

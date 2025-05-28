@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class Item : MonoBehaviour
     private bool trigger = false;
 
     [Header("Component")]
-    public ItemSO itemData;
+    public ItemData itemData;
     public TextMeshProUGUI titleTxt;
 
     private void Update()
@@ -16,6 +17,7 @@ public class Item : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && trigger)
         {
             Destroy(gameObject);
+            PickupItem();
         }
     }
 
@@ -24,6 +26,12 @@ public class Item : MonoBehaviour
     {
         titleTxt.text = itemData.ItemName;
     }
+
+    public void PickupItem()
+    {
+        InventoryUI.Instance.AddItemToSlot(itemData);
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -34,6 +42,7 @@ public class Item : MonoBehaviour
             trigger = true;
         }
     }
+
 
 
     private void OnTriggerExit2D(Collider2D collision)
