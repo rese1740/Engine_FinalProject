@@ -1,16 +1,10 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerStatus : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Vector2 moveInput;
-    [Header("애니메이션")]
-    Animator animator;
-    bool facingRight = true;
-    public Light2D spotLight2D;
-
     [Header("PlayerStat")]
     public PlayerSO playerData;
     public float currentHp;
@@ -18,12 +12,24 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float damage = 5f;
 
-    [Header("PlayerStat")]
+    [Header("변수")]
+    private Vector2 moveInput;
+    bool facingRight = true;
     public float minRadius = 1f;   // HP 0일 때 최소 반경
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
 
+    [Header("UI")]
+    public GameObject InventoryUI;
+    public TextMeshProUGUI[] StatusTmp;
+
+
     [Header("Managers")]
     public StageManager stageManager;
+
+    [Header("Component")]
+    public Light2D spotLight2D;
+    private Rigidbody2D rb;
+    Animator animator;
 
     void Start()
     {
@@ -74,6 +80,24 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Thrust");
         }
         #endregion
+
+        #region UI
+
+        StatusTmp[0].text = playerData.playerName;
+        StatusTmp[1].text = "HP :" +  playerData.currerntHp.ToString();
+        StatusTmp[2].text = "MaxHP :" + playerData.maxHp.ToString();
+        StatusTmp[3].text = "Damage :" + playerData.damage.ToString();
+        StatusTmp[4].text = "Agility :" + playerData.moveSpeed.ToString();
+        StatusTmp[5].text = "Gold :" + playerData.gold.ToString();
+
+
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InventoryUI.gameObject.SetActive(!InventoryUI.activeSelf);
+        }
+
     }
     void FixedUpdate()
     {
@@ -102,11 +126,5 @@ public class PlayerMovement : MonoBehaviour
         damage = playerData.damage;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("NextStage"))
-        {
-            stageManager.NextStage();   
-        }
-    }
+
 }
