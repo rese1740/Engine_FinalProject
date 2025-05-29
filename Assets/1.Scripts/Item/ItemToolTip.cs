@@ -1,15 +1,15 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ItemTooltip : MonoBehaviour
 {
-    public Text itemNameText;
-    public Text descriptionText;
+    public TextMeshProUGUI itemNameText;
+    public TextMeshProUGUI descriptionText;
     public Image iconImage;
+    private InventorySlot currentSlot;
 
     private RectTransform rectTransform;
-
 
     void Awake()
     {
@@ -17,8 +17,10 @@ public class ItemTooltip : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void ShowTooltip(ItemData item, Vector2 position)
+    public void ShowTooltip(ItemData item, Vector2 position, InventorySlot fromSlot)
     {
+        currentSlot = fromSlot;
+
         itemNameText.text = item.ItemName;
         descriptionText.text = item.description;
         iconImage.sprite = item.icon;
@@ -30,6 +32,12 @@ public class ItemTooltip : MonoBehaviour
 
     public void HideTooltip()
     {
+        currentSlot = null;
         gameObject.SetActive(false);
+    }
+
+    public bool IsShowingForSlot(InventorySlot slot)
+    {
+        return currentSlot == slot;
     }
 }

@@ -2,16 +2,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
     public Image iconImage;
     private ItemData currentItem;
+    private bool slotEnabled = false;
 
-    public ItemTooltip tooltip; // Tooltip 오브젝트 참조 연결 필요
+    public ItemTooltip tooltip; 
 
-    private void Start()
+   
+
+    private void Update()
     {
-        iconImage.enabled = false;
+        if(slotEnabled)
+        {
+            iconImage.enabled = true;
+        }
+        else
+        {
+            iconImage.enabled = false;
+        }
     }
 
     public void SetItem(ItemData item)
@@ -21,13 +31,14 @@ public class InventorySlot : MonoBehaviour
         if (item != null && item.icon != null)
         {
             iconImage.sprite = item.icon;
-            iconImage.enabled = true;
+            slotEnabled = true;
         }
         else
         {
-            iconImage.enabled = false;
+            slotEnabled = false;
         }
     }
+
 
     public void ClearSlot()
     {
@@ -45,20 +56,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (currentItem != null)
         {
-            tooltip.ShowTooltip(currentItem, Input.mousePosition);
+            tooltip.ShowTooltip(currentItem, Input.mousePosition, this);
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (currentItem != null)
-        {
-            tooltip.ShowTooltip(currentItem, Input.mousePosition);
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        tooltip.HideTooltip();
     }
 }
