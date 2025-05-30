@@ -19,6 +19,15 @@ public class PlayerStatus : MonoBehaviour
     public float minRadius = 1f;   // HP 0일 때 최소 반경
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
 
+    [Header("Combat")]
+    public GameObject smashHitboxPrefab;
+    public GameObject thrustHitboxPrefab;
+    public Transform attackPoint;
+
+    public float attackDamage = 5f;
+    public float thrustDamage = 8f;
+
+
     [Header("UI")]
     public GameObject InventoryUI;
     public TextMeshProUGUI[] StatusTmp;
@@ -115,6 +124,18 @@ public class PlayerStatus : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    public void SpawnSmashHitbox()
+    {
+        GameObject hitbox = Instantiate(smashHitboxPrefab, attackPoint.position, Quaternion.identity);
+        hitbox.GetComponent<AttackHitbox>().damage = attackDamage;
+    }
+
+    public void SpawnThrustHitbox()
+    {
+        GameObject hitbox = Instantiate(thrustHitboxPrefab, attackPoint.position, Quaternion.identity);
+        hitbox.GetComponent<AttackHitbox>().damage = thrustDamage;
     }
 
     public void TakeDamage(int damage)
