@@ -1,33 +1,23 @@
-using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine;
 using UnityEngine.UI;
+
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
     public Image iconImage;
+    public ItemTooltip tooltip; // 슬롯마다 자신의 툴팁 연결
     private ItemData currentItem;
     private bool slotEnabled = false;
 
-    public ItemTooltip tooltip; 
-
-   
-
     private void Update()
     {
-        if(slotEnabled)
-        {
-            iconImage.enabled = true;
-        }
-        else
-        {
-            iconImage.enabled = false;
-        }
+        iconImage.enabled = slotEnabled;
     }
 
     public void SetItem(ItemData item)
     {
         currentItem = item;
-
         if (item != null && item.icon != null)
         {
             iconImage.sprite = item.icon;
@@ -39,12 +29,14 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-
     public void ClearSlot()
     {
+        GameObject playerObj = GameObject.FindWithTag("Player");
+        Instantiate(currentItem.prefab, playerObj.transform.position, Quaternion.identity);
         currentItem = null;
         iconImage.sprite = null;
-        iconImage.enabled = false;
+        slotEnabled = false;
+        tooltip.HideTooltip(); 
     }
 
     public bool HasItem()
@@ -56,7 +48,11 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         if (currentItem != null)
         {
-            tooltip.ShowTooltip(currentItem, Input.mousePosition, this);
+            Vector3 pos = gameObject.transform.position;
+            pos.x += 50f; 
+            pos.y += 150f;  
+
+            tooltip.ShowTooltip(currentItem, pos, this);
         }
     }
 }
