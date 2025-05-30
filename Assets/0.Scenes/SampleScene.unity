@@ -1470,8 +1470,7 @@ MonoBehaviour:
   passiveSlots:
   - {fileID: 1247044204}
   - {fileID: 522308934}
-  activeSlots:
-  - {fileID: 971382114}
+  activeSlot: {fileID: 971382114}
 --- !u!1 &389850768
 GameObject:
   m_ObjectHideFlags: 0
@@ -6797,6 +6796,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1996203281}
   - component: {fileID: 1996203280}
+  - component: {fileID: 1996203285}
   - component: {fileID: 1996203283}
   - component: {fileID: 1996203279}
   - component: {fileID: 1996203282}
@@ -6998,6 +6998,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2901191, y: 0.27626538}
   m_EdgeRadius: 0
+--- !u!114 &1996203285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996203278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63812c174c55d484b886912680cc6c64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2032886390
 GameObject:
   m_ObjectHideFlags: 0

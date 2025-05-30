@@ -113,6 +113,28 @@ public class PlayerStatus : MonoBehaviour
         transform.localScale = scale;
     }
 
+    public void UseSkill(SkillType type, Transform spawnPoint)
+    {
+        switch (type)
+        {
+            case SkillType.Fireball:
+                Debug.Log("파이어볼");
+                break;
+
+            case SkillType.Heal:
+                Debug.Log("플레이어 회복!");
+                break;
+
+            case SkillType.Dash:
+                Debug.Log("플레이어가 대시함");
+                break;
+
+            case SkillType.None:
+                Debug.Log("스킬이 없습니다");
+                break;
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         currentHp -= damage;

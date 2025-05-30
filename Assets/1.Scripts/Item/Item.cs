@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
@@ -16,8 +15,15 @@ public class Item : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && trigger)
         {
-            Destroy(gameObject);
-            PickupItem();
+            if (itemData.ItemType == ItemType.Artifact && !InventoryUI.Instance.HasActiveItem())
+            {
+                Destroy(gameObject);
+                PickupItem();
+            }
+            else
+            {
+                Debug.Log("이미 슬롯이 차있습니다");
+            }
         }
     }
 

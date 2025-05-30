@@ -14,6 +14,14 @@ public enum ItemType
     Artifact
 }
 
+public enum SkillType
+{
+    None,
+    Dash,
+    Fireball,
+    Heal
+}
+
 [CreateAssetMenu]
 public class ItemData : ScriptableObject
 {
@@ -25,4 +33,5 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public ItemType ItemType;
     public ArtifactType ArtifactType;
+    public SkillType SkillType;
 }

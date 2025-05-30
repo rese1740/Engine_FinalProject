@@ -19,3 +19,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 0f2bd34d4ac1833499504a1a2a3edc42, type: 3}
   ItemType: 1
   ArtifactType: 1
+  SkillType: 3

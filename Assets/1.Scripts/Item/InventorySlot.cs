@@ -33,6 +33,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         GameObject playerObj = GameObject.FindWithTag("Player");
         Instantiate(currentItem.prefab, playerObj.transform.position, Quaternion.identity);
+    
         currentItem = null;
         iconImage.sprite = null;
         slotEnabled = false;
@@ -42,6 +43,11 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     public bool HasItem()
     {
         return currentItem != null;
+    }
+
+    public ItemData GetItem()
+    {
+        return currentItem; 
     }
 
     public void OnPointerClick(PointerEventData eventData)
