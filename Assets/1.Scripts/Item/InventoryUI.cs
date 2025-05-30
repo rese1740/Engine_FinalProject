@@ -1,4 +1,6 @@
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -6,6 +8,13 @@ public class InventoryUI : MonoBehaviour
 
     public InventorySlot[] passiveSlots;
     public InventorySlot activeSlot;
+
+    [Header("Skill")]
+    public float CoolTime;
+    public float maxCoolTime;
+    private bool IconEnabled = false;
+    public Image activeIcon;
+    
 
     private void Awake()
     {
@@ -17,10 +26,16 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        CoolTime -= Time.deltaTime;
+        activeIcon.fillAmount += Time.deltaTime / maxCoolTime;
+        if (Input.GetKeyDown(KeyCode.C) && CoolTime <= 0)
         {
             TryUseSkillFromActiveSlot();
+            activeIcon.fillAmount = 0;
+            CoolTime = maxCoolTime;
         }
+
+        activeIcon.enabled = IconEnabled;
     }
 
     public void AddItemToSlot(ItemData item)
@@ -41,6 +56,8 @@ public class InventoryUI : MonoBehaviour
             if (activeSlot != null && !activeSlot.HasItem())
             {
                 activeSlot.SetItem(item);
+                activeIcon.sprite = item.icon;
+                IconEnabled = true;
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -21,7 +22,6 @@ public class PlayerStatus : MonoBehaviour
     [Header("UI")]
     public GameObject InventoryUI;
     public TextMeshProUGUI[] StatusTmp;
-
 
     [Header("Managers")]
     public StageManager stageManager;
@@ -98,11 +98,15 @@ public class PlayerStatus : MonoBehaviour
             InventoryUI.gameObject.SetActive(!InventoryUI.activeSelf);
         }
 
+      
+
     }
     void FixedUpdate()
     {
         rb.velocity = moveInput * moveSpeed;
     }
+
+   
 
     void Flip()
     {
@@ -111,28 +115,6 @@ public class PlayerStatus : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
-    }
-
-    public void UseSkill(SkillType type, Transform spawnPoint)
-    {
-        switch (type)
-        {
-            case SkillType.Fireball:
-                Debug.Log("파이어볼");
-                break;
-
-            case SkillType.Heal:
-                Debug.Log("플레이어 회복!");
-                break;
-
-            case SkillType.Dash:
-                Debug.Log("플레이어가 대시함");
-                break;
-
-            case SkillType.None:
-                Debug.Log("스킬이 없습니다");
-                break;
-        }
     }
 
     public void TakeDamage(int damage)
