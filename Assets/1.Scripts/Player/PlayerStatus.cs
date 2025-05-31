@@ -33,7 +33,7 @@ public class PlayerStatus : MonoBehaviour
     public TextMeshProUGUI[] StatusTmp;
 
     [Header("Managers")]
-    public StageManager stageManager;
+    public RoomGenerator stageManager;
 
     [Header("Component")]
     public Light2D spotLight2D;
@@ -129,16 +129,16 @@ public class PlayerStatus : MonoBehaviour
     public void SpawnSmashHitbox()
     {
         GameObject hitbox = Instantiate(smashHitboxPrefab, attackPoint.position, Quaternion.identity);
-        hitbox.GetComponent<AttackHitbox>().damage = attackDamage;
+        hitbox.GetComponent<PlayerHitBox>().damage = attackDamage;
     }
 
     public void SpawnThrustHitbox()
     {
         GameObject hitbox = Instantiate(thrustHitboxPrefab, attackPoint.position, Quaternion.identity);
-        hitbox.GetComponent<AttackHitbox>().damage = thrustDamage;
+        hitbox.GetComponent<PlayerHitBox>().damage = thrustDamage;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHp -= damage;
         currentHp = Mathf.Max(currentHp, 0);

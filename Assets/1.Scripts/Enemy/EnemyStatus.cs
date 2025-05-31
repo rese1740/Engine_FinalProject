@@ -1,3 +1,4 @@
+ï»¿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(Animator))]
@@ -9,16 +10,97 @@ public class EnemyStatus : MonoBehaviour
     public float currentHp;
     public float moveSpeed = 2f;
 
+    [Header("Combat Settings")]
+    public float attackRange = 1.5f;
+    public float attackDelay = 0.2f;
+    public float attackCooldown = 1f;
+    public GameObject attackHitboxPrefab; 
+
+    public Transform hitboxSpawnPoint; 
+
     [Header("Components")]
     private Animator animator;
     private Rigidbody2D rb;
+    private Transform player;
+
     private bool isDead = false;
+    private float lastAttackTime = -999f;
+    private bool isAttacking = false;
+
+    enum EnemyState { Idle, Chasing, Attacking }
+    private EnemyState currentState = EnemyState.Chasing;
 
     void Start()
     {
         StatReload();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+    }
+
+    void Update()
+    {
+        if (isDead || player == null) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        switch (currentState)
+        {
+            case EnemyState.Chasing:
+                if (distanceToPlayer <= attackRange)
+                {
+                    animator.SetBool("move", false);
+                    currentState = EnemyState.Attacking;
+                    rb.velocity = Vector2.zero;
+                    StartCoroutine(AttackAfterDelay());
+                }
+                else
+                {
+                    animator.SetBool("move",true);
+                    Vector2 dir = (player.position - transform.position).normalized;
+                    rb.velocity = dir * moveSpeed;
+
+                    // ë°©í–¥ ì „í™˜ (ì™¼ìª½ì´ë©´ -1, ì˜¤ë¥¸ìª½ì´ë©´ 1)
+                    if (dir.x != 0)
+                    {
+                        Vector3 scale = transform.localScale;
+                        scale.x = Mathf.Sign(dir.x) * Mathf.Abs(scale.x);
+                        transform.localScale = scale;
+                    }
+                }
+                break;
+
+            case EnemyState.Attacking:
+                rb.velocity = Vector2.zero;
+                break;
+        }
+    }
+
+
+    IEnumerator AttackAfterDelay()
+    {
+        if (Time.time - lastAttackTime < attackCooldown)
+        {
+            currentState = EnemyState.Chasing;
+            yield break;
+        }
+
+        isAttacking = true;
+        yield return new WaitForSeconds(attackDelay);
+
+        animator.SetTrigger("Attack"); 
+        lastAttackTime = Time.time;
+    }
+
+    public void SpawnAttackHitbox()
+    {
+        if (attackHitboxPrefab != null && hitboxSpawnPoint != null)
+        {
+            Instantiate(attackHitboxPrefab, hitboxSpawnPoint.position, Quaternion.identity);
+        }
+
+        isAttacking = false;
+        currentState = EnemyState.Chasing;
     }
 
     void StatReload()
@@ -26,7 +108,6 @@ public class EnemyStatus : MonoBehaviour
         maxHp = enemyData.maxHp;
         currentHp = maxHp;
         moveSpeed = enemyData.moveSpeed;
-
     }
 
     public void TakeDamage(float damage)
@@ -45,14 +126,12 @@ public class EnemyStatus : MonoBehaviour
     void Die()
     {
         isDead = true;
-        animator.SetTrigger("Die");
+        animator.SetTrigger("Death");
         rb.velocity = Vector2.zero;
 
-        // Collider¸¦ ºñÈ°¼ºÈ­ÇØ¼­ ´õ ÀÌ»ó Ãæµ¹ÇÏÁö ¾Ê°Ô Ã³¸®
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        // Á×Àº ÈÄ »ç¶óÁü (2ÃÊ µÚ ÆÄ±«)
         Destroy(gameObject, 2f);
     }
 }

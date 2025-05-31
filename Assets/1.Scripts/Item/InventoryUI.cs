@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +13,7 @@ public class InventoryUI : MonoBehaviour
     public float maxCoolTime;
     private bool IconEnabled = false;
     public Image activeIcon;
-    
+
 
     private void Awake()
     {
@@ -30,10 +29,18 @@ public class InventoryUI : MonoBehaviour
         activeIcon.fillAmount += Time.deltaTime / maxCoolTime;
         if (Input.GetKeyDown(KeyCode.C) && CoolTime <= 0)
         {
-            TryUseSkillFromActiveSlot();
-            activeIcon.fillAmount = 0;
-            CoolTime = maxCoolTime;
+            if (HasActiveItem())
+            {
+                TryUseSkillFromActiveSlot();
+                activeIcon.fillAmount = 0;
+                CoolTime = maxCoolTime;
+            }
+            else
+            {
+                Debug.Log("아이템이 없습니다");
+            }
         }
+
 
         activeIcon.enabled = IconEnabled;
     }

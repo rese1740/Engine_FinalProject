@@ -15,14 +15,10 @@ public class Item : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && trigger)
         {
-            if (itemData.ItemType == ItemType.Artifact && !InventoryUI.Instance.HasActiveItem())
+            if (itemData.ItemType == ItemType.Artifact)
             {
                 Destroy(gameObject);
                 PickupItem();
-            }
-            else
-            {
-                Debug.Log("이미 슬롯이 차있습니다");
             }
         }
     }
