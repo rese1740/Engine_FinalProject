@@ -16,6 +16,9 @@ public class RoomGenerator : MonoBehaviour
     public Vector2Int roomTileSize = new Vector2Int(17, 17);
     public Vector2 tileSize = new Vector2(1f, 1f);
     public int roomSpacing = 1;
+    [SerializeField] private int wallDistanceX = 6; // 중심에서 벽까지의 x 거리
+    [SerializeField] private int wallDistanceY = 4; // 중심에서 벽까지의 y 거리
+    [SerializeField] private int openingHalfSize = 2; // 벽을 뚫는 반 너비 (총 길이 5칸이면 2)
 
     private List<RoomData> rooms = new List<RoomData>();
     private HashSet<Vector2Int> takenPositions = new HashSet<Vector2Int>();
@@ -129,41 +132,46 @@ public class RoomGenerator : MonoBehaviour
 
     void OpenWall(GameObject roomGO, Vector2Int direction)
     {
-        Tilemap tilemap = roomGO.GetComponentInChildren<Tilemap>();
-        if (tilemap == null) return;
+        Room room = roomGO.GetComponent<Room>();
+        if (room == null || room.wallTilemap == null) return;
 
-        Vector3Int origin = tilemap.origin;
-        int halfX = roomTileSize.x / 2;
-        int halfY = roomTileSize.y / 2;
+        Tilemap tilemap = room.wallTilemap;
+        Vector3Int center = room.GetCenterCell();
+
+        Vector3 worldPos = tilemap.CellToWorld(center);
+        Debug.Log("월드 위치: " + worldPos);
 
         List<Vector3Int> tilesToClear = new();
 
         if (direction == Vector2Int.right)
         {
-            for (int y = -2; y <= 2; y++)
-                tilesToClear.Add(new Vector3Int(origin.x + halfX, origin.y + y, 0));
+            int wallX = center.x + wallDistanceX;
+            for (int y = center.y - openingHalfSize; y <= center.y + openingHalfSize; y++)
+                tilesToClear.Add(new Vector3Int(wallX, y, 0));
         }
         else if (direction == Vector2Int.left)
         {
-            for (int y = -2; y <= 2; y++)
-                tilesToClear.Add(new Vector3Int(origin.x - halfX, origin.y + y, 0));
+            int wallX = center.x - wallDistanceX;
+            for (int y = center.y - openingHalfSize; y <= center.y + openingHalfSize; y++)
+                tilesToClear.Add(new Vector3Int(wallX, y, 0));
         }
         else if (direction == Vector2Int.up)
         {
-            for (int x = -2; x <= 2; x++)
-                tilesToClear.Add(new Vector3Int(origin.x + x, origin.y + halfY, 0));
+            int wallY = center.y + wallDistanceY;
+            for (int x = center.x - openingHalfSize; x <= center.x + openingHalfSize; x++)
+                tilesToClear.Add(new Vector3Int(x, wallY, 0));
         }
         else if (direction == Vector2Int.down)
         {
-            for (int x = -2; x <= 2; x++)
-                tilesToClear.Add(new Vector3Int(origin.x + x, origin.y - halfY, 0));
+            int wallY = center.y - wallDistanceY;
+            for (int x = center.x - openingHalfSize; x <= center.x + openingHalfSize; x++)
+                tilesToClear.Add(new Vector3Int(x, wallY, 0));
         }
 
         foreach (var pos in tilesToClear)
         {
-            tilemap.SetTile(pos, null); 
+            tilemap.SetTile(pos, null);
         }
     }
-
 
 }

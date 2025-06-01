@@ -11167,9 +11167,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPrefab: {fileID: 543483045593460119, guid: 273934e8b6145584a878d7d00b486760, type: 3}
   maxRooms: 10
-  roomTileSize: {x: 20, y: 20}
+  roomTileSize: {x: 19, y: 19}
   tileSize: {x: 1, y: 1}
   roomSpacing: 2
+  wallDistanceX: 8
+  wallDistanceY: 8
+  openingHalfSize: 2
+  tilemap: {fileID: 501370975}
 --- !u!1 &1182208502
 GameObject:
   m_ObjectHideFlags: 0
