@@ -11170,10 +11170,9 @@ MonoBehaviour:
   roomTileSize: {x: 19, y: 19}
   tileSize: {x: 1, y: 1}
   roomSpacing: 2
-  wallDistanceX: 8
-  wallDistanceY: 8
+  wallDistanceX: 9
+  wallDistanceY: 9
   openingHalfSize: 2
-  tilemap: {fileID: 501370975}
 --- !u!1 &1182208502
 GameObject:
   m_ObjectHideFlags: 0

@@ -137,9 +137,9 @@ public class RoomGenerator : MonoBehaviour
 
         Tilemap tilemap = room.wallTilemap;
         Vector3Int center = room.GetCenterCell();
+        center = new Vector3Int(center.x - 1, center.y - 15, 0);
 
         Vector3 worldPos = tilemap.CellToWorld(center);
-        Debug.Log("월드 위치: " + worldPos);
 
         List<Vector3Int> tilesToClear = new();
 
