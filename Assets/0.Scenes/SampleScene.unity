@@ -11223,13 +11223,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomPrefab: {fileID: 543483045593460119, guid: 273934e8b6145584a878d7d00b486760, type: 3}
-  maxRooms: 10
+  maxRooms: 8
   roomTileSize: {x: 19, y: 19}
   tileSize: {x: 1, y: 1}
   roomSpacing: 2
   wallDistanceX: 9
   wallDistanceY: 9
   openingHalfSize: 2
+  horizontalCorridorPrefab: {fileID: 575191587686585258, guid: 6b9b4f77b04d65743bdad58c14abb77e, type: 3}
+  verticalCorridorPrefab: {fileID: 5690331315199576696, guid: 97b08e6f48001694da619a483adc49c6, type: 3}
 --- !u!1 &1182208502
 GameObject:
   m_ObjectHideFlags: 0
@@ -16165,7 +16167,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 538640675, guid: b5895c82813298e4195c4f45994c2f27, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

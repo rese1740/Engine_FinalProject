@@ -11,14 +11,19 @@ public class RoomData
 
 public class RoomGenerator : MonoBehaviour
 {
+    [Header("방")]
     public GameObject roomPrefab;
     public int maxRooms = 10;
     public Vector2Int roomTileSize = new Vector2Int(17, 17);
     public Vector2 tileSize = new Vector2(1f, 1f);
     public int roomSpacing = 1;
-    [SerializeField] private int wallDistanceX = 6; // 중심에서 벽까지의 x 거리
-    [SerializeField] private int wallDistanceY = 4; // 중심에서 벽까지의 y 거리
-    [SerializeField] private int openingHalfSize = 2; // 벽을 뚫는 반 너비 (총 길이 5칸이면 2)
+    [SerializeField] private int wallDistanceX = 6; 
+    [SerializeField] private int wallDistanceY = 4; 
+    [SerializeField] private int openingHalfSize = 2; 
+
+    [Header("복도")]
+    public GameObject horizontalCorridorPrefab;
+    public GameObject verticalCorridorPrefab;
 
     private List<RoomData> rooms = new List<RoomData>();
     private HashSet<Vector2Int> takenPositions = new HashSet<Vector2Int>();
@@ -42,7 +47,7 @@ public class RoomGenerator : MonoBehaviour
 
         RoomData startRoom = new RoomData { position = Vector2Int.zero, isStartRoom = true };
         GameObject startGO = SpawnRoom(startRoom);
-        startRoom.roomGO = startGO;  
+        startRoom.roomGO = startGO;
         rooms.Add(startRoom);
         takenPositions.Add(startRoom.position);
 
@@ -60,7 +65,7 @@ public class RoomGenerator : MonoBehaviour
             newRoom.roomGO = newRoomGO;
             rooms.Add(newRoom);
             takenPositions.Add(newPos);
-           
+
             List<Vector2Int> neighbors = GetNeighborDirections(newRoom.position);
             foreach (Vector2Int dir in neighbors)
             {
@@ -70,9 +75,30 @@ public class RoomGenerator : MonoBehaviour
                 if (neighborRoom == null || neighborRoom.roomGO == null) continue;
 
                 GameObject neighborGO = neighborRoom.roomGO;
-                OpenWall(newRoomGO, dir);
-                OpenWall(neighborGO, -dir);
-      
+
+                var openedTilesNewRoom = OpenWallAndGetTiles(newRoomGO, dir);
+                var openedTilesNeighborRoom = OpenWallAndGetTiles(neighborGO, -dir);
+
+                Vector3 corridorOffset = Vector3.zero;
+
+                if (dir == Vector2Int.up)
+                    corridorOffset = new Vector3(-6f, 10f, 0f);
+                else if (dir == Vector2Int.down)
+                    corridorOffset = new Vector3(-6f, 10f, 0f);
+                else if (dir == Vector2Int.right)
+                    corridorOffset = new Vector3(-13f, 11f, 0f);
+                else if (dir == Vector2Int.left)
+                    corridorOffset = new Vector3(-13f, 11f, 0f);
+                Vector3 corridorPos = CalculateCorridorPosition(openedTilesNewRoom, openedTilesNeighborRoom, newRoomGO, neighborGO) + corridorOffset;
+
+
+                // 방향 판단 (가로 또는 세로)
+                bool horizontal = dir == Vector2Int.left || dir == Vector2Int.right;
+
+                Quaternion rotation = horizontal ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 0);
+                GameObject prefab = horizontal ? horizontalCorridorPrefab : verticalCorridorPrefab;
+
+                Instantiate(prefab, corridorPos, rotation, transform);
             }
         }
     }
@@ -98,18 +124,16 @@ public class RoomGenerator : MonoBehaviour
         return Vector2Int.zero;
     }
 
+    
+
 
     GameObject SpawnRoom(RoomData room)
     {
-        Vector3 worldPos = new Vector3(
-            room.position.x * roomTileSize.x * tileSize.x,
-            room.position.y * roomTileSize.y * tileSize.y,
-            0f);
-
+        Vector3 worldPos = GetRoomWorldCenter(room);
         GameObject go = Instantiate(roomPrefab, worldPos, Quaternion.identity, transform);
         go.name = "Room_" + room.position;
         room.roomGO = go;
-        return go; 
+        return go;
     }
 
 
@@ -130,16 +154,14 @@ public class RoomGenerator : MonoBehaviour
     }
 
 
-    void OpenWall(GameObject roomGO, Vector2Int direction)
+    List<Vector3Int> OpenWallAndGetTiles(GameObject roomGO, Vector2Int direction)
     {
         Room room = roomGO.GetComponent<Room>();
-        if (room == null || room.wallTilemap == null) return;
+        if (room == null || room.wallTilemap == null) return null;
 
         Tilemap tilemap = room.wallTilemap;
         Vector3Int center = room.GetCenterCell();
         center = new Vector3Int(center.x - 1, center.y - 15, 0);
-
-        Vector3 worldPos = tilemap.CellToWorld(center);
 
         List<Vector3Int> tilesToClear = new();
 
@@ -172,6 +194,50 @@ public class RoomGenerator : MonoBehaviour
         {
             tilemap.SetTile(pos, null);
         }
+
+        return tilesToClear;
+    }
+
+    Vector3 CalculateCorridorPosition(List<Vector3Int> tilesA, List<Vector3Int> tilesB, GameObject roomAGO, GameObject roomBGO)
+    {
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+
+        // roomAGO 월드 좌표 변환
+        var tilemapA = roomAGO.GetComponent<Room>().wallTilemap;
+        foreach (var tilePos in tilesA)
+        {
+            Vector3 worldPos = tilemapA.CellToWorld(tilePos);
+            sum += worldPos;
+            count++;
+        }
+
+        // roomBGO 월드 좌표 변환
+        var tilemapB = roomBGO.GetComponent<Room>().wallTilemap;
+        foreach (var tilePos in tilesB)
+        {
+            Vector3 worldPos = tilemapB.CellToWorld(tilePos);
+            sum += worldPos;
+            count++;
+        }
+
+        if (count == 0) return Vector3.zero;
+        return sum / count;
+    }
+
+
+
+
+
+
+
+
+    Vector3 GetRoomWorldCenter(RoomData room)
+    {
+        return new Vector3(
+            room.position.x * roomTileSize.x * tileSize.x,
+            room.position.y * roomTileSize.y * tileSize.y,
+            0f);
     }
 
 }

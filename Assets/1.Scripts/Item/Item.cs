@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && trigger)
         {
-            if (itemData.ItemType == ItemType.Artifact)
+            if (itemData.ItemType == ItemType.Artifact && !InventoryUI.Instance.HasActiveItem())
             {
                 Destroy(gameObject);
                 PickupItem();
