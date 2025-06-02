@@ -12,6 +12,11 @@ public class RoomData
 public class RoomGenerator : MonoBehaviour
 {
     [Header("방")]
+    public List<GameObject> roomPrefabs;  // 일반 방들 (섞을 대상)
+    public GameObject startRoomPrefab;    // 시작 방
+    public GameObject portalRoomPrefab;   // 포탈 방
+
+    private List<GameObject> shuffledRooms; // 섞인 방들 담을 리스트
     public GameObject roomPrefab;
     public int maxRooms = 10;
     public Vector2Int roomTileSize = new Vector2Int(17, 17);
@@ -45,64 +50,71 @@ public class RoomGenerator : MonoBehaviour
         rooms.Clear();
         takenPositions.Clear();
 
-        RoomData startRoom = new RoomData { position = Vector2Int.zero, isStartRoom = true };
-        GameObject startGO = SpawnRoom(startRoom);
-        startRoom.roomGO = startGO;
-        rooms.Add(startRoom);
-        takenPositions.Add(startRoom.position);
+        // 1) 일반 방 리스트 복사 후 섞기
+        List<GameObject> shuffledRooms = new List<GameObject>(roomPrefabs);
+        ShuffleList(shuffledRooms);
 
-        for (int i = 1; i < maxRooms; i++)
+        // 2) StartRoom을 맨 앞에, PortalRoom을 맨 뒤에 넣기
+        shuffledRooms.Insert(0, startRoomPrefab);
+        shuffledRooms.Add(portalRoomPrefab);
+
+        // 3) 방 생성 (shuffledRooms 순서대로)
+        for (int i = 0; i < Mathf.Min(maxRooms, shuffledRooms.Count); i++)
         {
-            Vector2Int newPos = GetNewPosition(out RoomData connectedFrom, out Vector2Int dirFrom);
-            if (newPos == Vector2Int.zero)
-            {
-                Debug.LogWarning("새 방 위치 찾기 실패");
-                break;
-            }
+            Vector2Int pos = (i == 0) ? Vector2Int.zero : GetNewPosition(out RoomData connectedFrom, out Vector2Int dirFrom);
 
-            RoomData newRoom = new RoomData { position = newPos };
-            GameObject newRoomGO = SpawnRoom(newRoom);
-            newRoom.roomGO = newRoomGO;
+            RoomData newRoom = new RoomData { position = pos, isStartRoom = (i == 0) };
+            GameObject go = Instantiate(shuffledRooms[i], GetRoomWorldCenter(newRoom), Quaternion.identity, transform);
+            go.name = (i == 0) ? "StartRoom" : (i == shuffledRooms.Count - 1) ? "PortalRoom" : "Room_" + pos;
+
+            newRoom.roomGO = go;
             rooms.Add(newRoom);
-            takenPositions.Add(newPos);
+            takenPositions.Add(pos);
 
-            List<Vector2Int> neighbors = GetNeighborDirections(newRoom.position);
+            if (i == 0) continue;
+
+            // 벽 열기 및 복도 연결
+            List<Vector2Int> neighbors = GetNeighborDirections(pos);
             foreach (Vector2Int dir in neighbors)
             {
-                Vector2Int neighborPos = newRoom.position + dir * roomSpacing;
+                Vector2Int neighborPos = pos + dir * roomSpacing;
                 RoomData neighborRoom = rooms.Find(r => r.position == neighborPos);
-
                 if (neighborRoom == null || neighborRoom.roomGO == null) continue;
 
                 GameObject neighborGO = neighborRoom.roomGO;
 
-                var openedTilesNewRoom = OpenWallAndGetTiles(newRoomGO, dir);
+                var openedTilesNewRoom = OpenWallAndGetTiles(go, dir);
                 var openedTilesNeighborRoom = OpenWallAndGetTiles(neighborGO, -dir);
 
                 Vector3 corridorOffset = Vector3.zero;
 
-                if (dir == Vector2Int.up)
+                if (dir == Vector2Int.up || dir == Vector2Int.down)
                     corridorOffset = new Vector3(-6f, 10f, 0f);
-                else if (dir == Vector2Int.down)
-                    corridorOffset = new Vector3(-6f, 10f, 0f);
-                else if (dir == Vector2Int.right)
+                else if (dir == Vector2Int.left || dir == Vector2Int.right)
                     corridorOffset = new Vector3(-13f, 11f, 0f);
-                else if (dir == Vector2Int.left)
-                    corridorOffset = new Vector3(-13f, 11f, 0f);
-                Vector3 corridorPos = CalculateCorridorPosition(openedTilesNewRoom, openedTilesNeighborRoom, newRoomGO, neighborGO) + corridorOffset;
 
+                Vector3 corridorPos = CalculateCorridorPosition(openedTilesNewRoom, openedTilesNeighborRoom, go, neighborGO) + corridorOffset;
 
-                // 방향 판단 (가로 또는 세로)
                 bool horizontal = dir == Vector2Int.left || dir == Vector2Int.right;
-
-                Quaternion rotation = horizontal ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 0);
                 GameObject prefab = horizontal ? horizontalCorridorPrefab : verticalCorridorPrefab;
 
-                Instantiate(prefab, corridorPos, rotation, transform);
+                Instantiate(prefab, corridorPos, Quaternion.identity, transform);
             }
         }
     }
 
+
+
+    void ShuffleList<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            (list[i], list[rand]) = (list[rand], list[i]);
+        }
+    }
+
+    // 위치 생성 함수는 기존 GetNewPosition과 비슷한 형태로 만드면 됨
     Vector2Int GetNewPosition(out RoomData fromRoom, out Vector2Int fromDirection)
     {
         for (int attempt = 0; attempt < 100; attempt++)
@@ -124,7 +136,8 @@ public class RoomGenerator : MonoBehaviour
         return Vector2Int.zero;
     }
 
-    
+
+
 
 
     GameObject SpawnRoom(RoomData room)
