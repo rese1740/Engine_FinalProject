@@ -25,7 +25,7 @@ public class EnemyStatus : MonoBehaviour
 
     private bool isDead = false;
     private float lastAttackTime = -999f;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
 
     enum EnemyState { Idle, Chasing, Attacking }
     private EnemyState currentState = EnemyState.Chasing;

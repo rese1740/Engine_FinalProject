@@ -15,6 +15,7 @@ public class PlayerHitBox: MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyStatus enemy = other.GetComponent<EnemyStatus>();
+
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);

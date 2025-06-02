@@ -72,7 +72,7 @@ public class RoomGenerator : MonoBehaviour
                 GameObject neighborGO = neighborRoom.roomGO;
                 OpenWall(newRoomGO, dir);
                 OpenWall(neighborGO, -dir);
-               
+      
             }
         }
     }
