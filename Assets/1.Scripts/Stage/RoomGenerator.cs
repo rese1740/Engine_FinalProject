@@ -30,6 +30,12 @@ public class RoomGenerator : MonoBehaviour
     public GameObject horizontalCorridorPrefab;
     public GameObject verticalCorridorPrefab;
 
+    [Header("미니맵")]
+    public MinimapManager minimapManager;
+    public Transform player;
+    private Vector2Int lastPlayerRoomPos;
+
+
     private List<RoomData> rooms = new List<RoomData>();
     private HashSet<Vector2Int> takenPositions = new HashSet<Vector2Int>();
     private Vector2Int[] directions = new Vector2Int[]
@@ -43,6 +49,24 @@ public class RoomGenerator : MonoBehaviour
     void Start()
     {
         GenerateRooms();
+        minimapManager.CreateMinimap(rooms);
+    }
+
+    private void Update()
+    {
+        Vector2Int currentRoom = GetPlayerRoomPosition(player.position);
+        if (currentRoom != lastPlayerRoomPos)
+        {
+            lastPlayerRoomPos = currentRoom;
+            minimapManager.HighlightRoom(currentRoom);
+        }
+    }
+
+    public Vector2Int GetPlayerRoomPosition(Vector3 playerPos)
+    {
+        int x = Mathf.RoundToInt(playerPos.x / (roomTileSize.x * tileSize.x));
+        int y = Mathf.RoundToInt(playerPos.y / (roomTileSize.y * tileSize.y));
+        return new Vector2Int(x, y);
     }
 
     void GenerateRooms()
@@ -103,8 +127,6 @@ public class RoomGenerator : MonoBehaviour
         }
     }
 
-
-
     void ShuffleList<T>(List<T> list)
     {
         for (int i = 0; i < list.Count; i++)
@@ -114,7 +136,6 @@ public class RoomGenerator : MonoBehaviour
         }
     }
 
-    // 위치 생성 함수는 기존 GetNewPosition과 비슷한 형태로 만드면 됨
     Vector2Int GetNewPosition(out RoomData fromRoom, out Vector2Int fromDirection)
     {
         for (int attempt = 0; attempt < 100; attempt++)
@@ -136,20 +157,6 @@ public class RoomGenerator : MonoBehaviour
         return Vector2Int.zero;
     }
 
-
-
-
-
-    GameObject SpawnRoom(RoomData room)
-    {
-        Vector3 worldPos = GetRoomWorldCenter(room);
-        GameObject go = Instantiate(roomPrefab, worldPos, Quaternion.identity, transform);
-        go.name = "Room_" + room.position;
-        room.roomGO = go;
-        return go;
-    }
-
-
     List<Vector2Int> GetNeighborDirections(Vector2Int currentPos)
     {
         List<Vector2Int> neighbors = new List<Vector2Int>();
@@ -165,7 +172,6 @@ public class RoomGenerator : MonoBehaviour
 
         return neighbors;
     }
-
 
     List<Vector3Int> OpenWallAndGetTiles(GameObject roomGO, Vector2Int direction)
     {
@@ -237,13 +243,6 @@ public class RoomGenerator : MonoBehaviour
         if (count == 0) return Vector3.zero;
         return sum / count;
     }
-
-
-
-
-
-
-
 
     Vector3 GetRoomWorldCenter(RoomData room)
     {

@@ -24,6 +24,7 @@ public class PlayerStatus : MonoBehaviour
     public GameObject thrustHitboxPrefab;
     public Transform attackPoint;
 
+
     public float attackDamage = 5f;
     public float thrustDamage = 8f;
 
@@ -102,7 +103,7 @@ public class PlayerStatus : MonoBehaviour
 
         #endregion
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             InventoryUI.gameObject.SetActive(!InventoryUI.activeSelf);
         }
@@ -114,8 +115,6 @@ public class PlayerStatus : MonoBehaviour
     {
         rb.velocity = moveInput * moveSpeed;
     }
-
-   
 
     void Flip()
     {
