@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerStatus : MonoBehaviour
@@ -150,5 +151,14 @@ public class PlayerStatus : MonoBehaviour
         damage = playerData.damage;
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Portal"))
+        {
+            int StageIndex = SceneManager.GetActiveScene().buildIndex;
+            int NextStageIndex = StageIndex += 1;
+            SceneManager.LoadScene(NextStageIndex);
+        }
+    }
 
 }

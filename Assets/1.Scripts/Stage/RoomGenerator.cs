@@ -67,7 +67,7 @@ public class RoomGenerator : MonoBehaviour
     {
         int x = Mathf.RoundToInt(playerPos.x / (roomTileSize.x * tileSize.x));
         int y = Mathf.FloorToInt(playerPos.y / (roomTileSize.y * tileSize.y));
-        return new Vector2Int(x, y  + 1);
+        return new Vector2Int(x, y  + (int)1.5f);
     }
 
     void GenerateRooms()

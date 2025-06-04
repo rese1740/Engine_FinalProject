@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - NextStage
   - Enemy
+  - Portal
   layers:
   - Default
   - TransparentFX

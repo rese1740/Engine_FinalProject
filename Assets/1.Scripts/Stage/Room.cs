@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,14 +12,18 @@ public class Room : MonoBehaviour
 
     public RoomSO roomData;
 
-    
-
-
-    void SpawnEnemy()
+    IEnumerator SpawnEnemy()
     {
         Instantiate(roomData.Goblin);
+
+        yield return new WaitForSeconds(1f);
     }
 
+    public void StartRoomLogic()
+    {
+        StartCoroutine(SpawnEnemy());
+
+    }
 
     public Vector3Int GetCenterCell()
     {

@@ -12,11 +12,12 @@ public enum RoomType
 }
 
 [CreateAssetMenu]
-public class RoomSO : MonoBehaviour
+public class RoomSO : ScriptableObject
 {
     [Header("Info")]
     public RoomType roomType;
 
     [Header("Prefabs")]
     public GameObject Goblin;
+    public GameObject Mushroom;    
 }
