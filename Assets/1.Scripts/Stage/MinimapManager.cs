@@ -12,7 +12,6 @@ public class MinimapManager : MonoBehaviour
 
     private GameObject currentHighlight;
 
-    // 모든 방 셀: position → 셀 오브젝트
     private Dictionary<Vector2Int, GameObject> roomIcons = new();
 
     public void CreateMinimap(List<RoomData> rooms)
@@ -22,17 +21,14 @@ public class MinimapManager : MonoBehaviour
             GameObject cell = Instantiate(cellPrefab, minimapRoot);
             cell.name = $"MiniCell_{room.position}";
 
-            // 셀 위치 조정
             Vector2 cellPos = new Vector2(room.position.x, room.position.y) * 20f;
             cell.GetComponent<RectTransform>().anchoredPosition = cellPos;
 
-            // 초기 색상 (시작/포탈 구분)
             Image img = cell.GetComponent<Image>();
             if (room.isStartRoom) img.color = Color.green;
             else if (room.roomGO.name.Contains("Portal")) img.color = Color.red;
             else img.color = defaultColor;
 
-            // 딕셔너리에 등록
             roomIcons[room.position] = cell;
         }
     }
@@ -49,7 +45,7 @@ public class MinimapManager : MonoBehaviour
         if (roomIcons.TryGetValue(pos, out var icon))
         {
             Image img = icon.GetComponent<Image>();
-            if (img != null)
+            if (img != null && !IsSpecialRoomColor(img.color))
             {
                 img.color = highlightColor;
                 currentHighlight = icon;

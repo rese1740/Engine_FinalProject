@@ -12,11 +12,11 @@ public class RoomData
 public class RoomGenerator : MonoBehaviour
 {
     [Header("방")]
-    public List<GameObject> roomPrefabs;  // 일반 방들 (섞을 대상)
-    public GameObject startRoomPrefab;    // 시작 방
-    public GameObject portalRoomPrefab;   // 포탈 방
+    public List<GameObject> roomPrefabs;  
+    public GameObject startRoomPrefab;   
+    public GameObject portalRoomPrefab;  
 
-    private List<GameObject> shuffledRooms; // 섞인 방들 담을 리스트
+    private List<GameObject> shuffledRooms; 
     public GameObject roomPrefab;
     public int maxRooms = 10;
     public Vector2Int roomTileSize = new Vector2Int(17, 17);
@@ -33,6 +33,7 @@ public class RoomGenerator : MonoBehaviour
     [Header("미니맵")]
     public MinimapManager minimapManager;
     public Transform player;
+    private Transform playerPos;    
     private Vector2Int lastPlayerRoomPos;
 
 
@@ -65,8 +66,8 @@ public class RoomGenerator : MonoBehaviour
     public Vector2Int GetPlayerRoomPosition(Vector3 playerPos)
     {
         int x = Mathf.RoundToInt(playerPos.x / (roomTileSize.x * tileSize.x));
-        int y = Mathf.RoundToInt(playerPos.y / (roomTileSize.y * tileSize.y));
-        return new Vector2Int(x, y);
+        int y = Mathf.FloorToInt(playerPos.y / (roomTileSize.y * tileSize.y));
+        return new Vector2Int(x, y  + 1);
     }
 
     void GenerateRooms()
@@ -74,15 +75,12 @@ public class RoomGenerator : MonoBehaviour
         rooms.Clear();
         takenPositions.Clear();
 
-        // 1) 일반 방 리스트 복사 후 섞기
         List<GameObject> shuffledRooms = new List<GameObject>(roomPrefabs);
         ShuffleList(shuffledRooms);
 
-        // 2) StartRoom을 맨 앞에, PortalRoom을 맨 뒤에 넣기
         shuffledRooms.Insert(0, startRoomPrefab);
         shuffledRooms.Add(portalRoomPrefab);
 
-        // 3) 방 생성 (shuffledRooms 순서대로)
         for (int i = 0; i < Mathf.Min(maxRooms, shuffledRooms.Count); i++)
         {
             Vector2Int pos = (i == 0) ? Vector2Int.zero : GetNewPosition(out RoomData connectedFrom, out Vector2Int dirFrom);
@@ -97,7 +95,6 @@ public class RoomGenerator : MonoBehaviour
 
             if (i == 0) continue;
 
-            // 벽 열기 및 복도 연결
             List<Vector2Int> neighbors = GetNeighborDirections(pos);
             foreach (Vector2Int dir in neighbors)
             {

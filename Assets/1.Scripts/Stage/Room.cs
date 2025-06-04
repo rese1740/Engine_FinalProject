@@ -9,6 +9,17 @@ public class Room : MonoBehaviour
     public Tilemap tilemap;
     public Transform centerPoint; // 중앙 기준 오브젝트
 
+    public RoomSO roomData;
+
+    
+
+
+    void SpawnEnemy()
+    {
+        Instantiate(roomData.Goblin);
+    }
+
+
     public Vector3Int GetCenterCell()
     {
         return tilemap.WorldToCell(centerPoint.position);
