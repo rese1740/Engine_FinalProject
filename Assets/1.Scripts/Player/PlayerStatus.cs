@@ -35,7 +35,7 @@ public class PlayerStatus : MonoBehaviour
     public TextMeshProUGUI[] StatusTmp;
 
     [Header("Managers")]
-    public RoomGenerator stageManager;
+    public ProceduralRoomGenerator stageManager;
 
     [Header("Component")]
     public Light2D spotLight2D;
