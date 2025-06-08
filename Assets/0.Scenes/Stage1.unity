@@ -4788,23 +4788,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b27f52540533494a92637aeddd74d53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPrefabs:
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  startRoomPrefab: {fileID: 543483045593460119, guid: 273934e8b6145584a878d7d00b486760, type: 3}
-  portalRoomPrefab: {fileID: 543483045593460119, guid: 0b8db8d4cc7730f4ba21358268753b35, type: 3}
-  roomPrefab: {fileID: 543483045593460119, guid: 273934e8b6145584a878d7d00b486760, type: 3}
-  maxRooms: 4
-  roomTileSize: {x: 19, y: 19}
-  tileSize: {x: 1, y: 1}
-  roomSpacing: 2
-  wallDistanceX: 9
-  wallDistanceY: 9
-  openingHalfSize: 2
-  horizontalCorridorPrefab: {fileID: 575191587686585258, guid: 6b9b4f77b04d65743bdad58c14abb77e, type: 3}
-  verticalCorridorPrefab: {fileID: 5690331315199576696, guid: 97b08e6f48001694da619a483adc49c6, type: 3}
-  minimapManager: {fileID: 364741080}
-  player: {fileID: 1996203281}
 --- !u!1 &1182208502
 GameObject:
   m_ObjectHideFlags: 0

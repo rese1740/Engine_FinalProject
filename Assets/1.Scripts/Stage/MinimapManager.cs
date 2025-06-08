@@ -14,24 +14,7 @@ public class MinimapManager : MonoBehaviour
 
     private Dictionary<Vector2Int, GameObject> roomIcons = new();
 
-    public void CreateMinimap(List<RoomData> rooms)
-    {
-        foreach (var room in rooms)
-        {
-            GameObject cell = Instantiate(cellPrefab, minimapRoot);
-            cell.name = $"MiniCell_{room.position}";
-
-            Vector2 cellPos = new Vector2(room.position.x, room.position.y) * 20f;
-            cell.GetComponent<RectTransform>().anchoredPosition = cellPos;
-
-            Image img = cell.GetComponent<Image>();
-            if (room.isStartRoom) img.color = Color.green;
-            else if (room.roomGO.name.Contains("Portal")) img.color = Color.red;
-            else img.color = defaultColor;
-
-            roomIcons[room.position] = cell;
-        }
-    }
+   
 
     public void HighlightRoom(Vector2Int pos)
     {

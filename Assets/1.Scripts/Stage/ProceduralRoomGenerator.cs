@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public class RoomData { public Vector2Int position; public GameObject roomGO; public bool isStartRoom; }
+
 
 [System.Serializable]
 public class TileSet
@@ -74,7 +74,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         ValidateTileSet();
         InitializeGrid();
         GenerateProceduralDungeon();
-        SetupMinimap();
     }
 
     void Update()
@@ -387,22 +386,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         return generatedRooms.Find(r => r.gridPosition == pos);
     }
 
-    void SetupMinimap()
-    {
-        if (minimapManager == null) return;
-
-        List<RoomData> list = new List<RoomData>();
-        foreach (var room in generatedRooms)
-        {
-            list.Add(new RoomData
-            {
-                position = room.gridPosition,
-                roomGO = room.gameObject,
-                isStartRoom = false
-            });
-        }
-        minimapManager.CreateMinimap(list);
-    }
 
     void UpdatePlayerTracking()
     {
