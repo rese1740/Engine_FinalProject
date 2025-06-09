@@ -40,6 +40,11 @@ public class ProceduralRoom : MonoBehaviour
     public Tilemap floorTilemap;
     public Tilemap wallTilemap;
     public Transform centerPoint;
+
+    private void Start()
+    {
+       
+    }
 }
 
 public class ProceduralRoomGenerator : MonoBehaviour
@@ -201,6 +206,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         wallObj.transform.localPosition = Vector3.zero;
 
         Tilemap wallTilemap = wallObj.AddComponent<Tilemap>();
+        TilemapCollider2D WallTilemap = wallTilemap.gameObject.AddComponent<TilemapCollider2D>();
         wallObj.AddComponent<TilemapRenderer>().sortingOrder = 1;
 
         GameObject centerObj = new GameObject("Center");

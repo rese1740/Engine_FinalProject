@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public static InventoryUI Instance;
-
+    public PlayerSO playerData;
     public InventorySlot[] passiveSlots;
     public InventorySlot activeSlot;
 
@@ -22,6 +22,24 @@ public class InventoryUI : MonoBehaviour
         else
             Destroy(gameObject);
     }
+    private void Start()
+    {
+        for (int i = 0; i < passiveSlots.Length; i++)
+        {
+            if (playerData.passiveItems[i] != null)
+            {
+                passiveSlots[i].SetItem(playerData.passiveItems[i]);
+            }
+        }
+
+        if (playerData.activeItem != null)
+        {
+            activeSlot.SetItem(playerData.activeItem);
+            activeIcon.sprite = playerData.activeItem.icon;
+            IconEnabled = true;
+        }
+    }
+
 
     private void Update()
     {
@@ -49,11 +67,12 @@ public class InventoryUI : MonoBehaviour
     {
         if (item.ArtifactType == ArtifactType.Passive)
         {
-            foreach (var slot in passiveSlots)
+            for (int i = 0; i < passiveSlots.Length; i++)
             {
-                if (!slot.HasItem())
+                if (!passiveSlots[i].HasItem())
                 {
-                    slot.SetItem(item);
+                    passiveSlots[i].SetItem(item);
+                    playerData.passiveItems[i] = item;
                     return;
                 }
             }
@@ -63,6 +82,7 @@ public class InventoryUI : MonoBehaviour
             if (activeSlot != null && !activeSlot.HasItem())
             {
                 activeSlot.SetItem(item);
+                playerData.activeItem = item;
                 activeIcon.sprite = item.icon;
                 IconEnabled = true;
             }

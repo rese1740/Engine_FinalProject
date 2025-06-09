@@ -1525,6 +1525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effe536bd1b58d646b6e95a5adb92468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 04772c1f898843d49bd6634ae0b0507e, type: 2}
   passiveSlots:
   - {fileID: 1247044204}
   - {fileID: 522308934}
@@ -31361,6 +31362,7 @@ MonoBehaviour:
   maxHp: 10
   moveSpeed: 5
   damage: 5
+  gold: 0
   minRadius: 1
   maxRadius: 7
   smashHitboxPrefab: {fileID: 3977091141637975862, guid: 433f0624b865ec843958285986e1aa6c, type: 3}

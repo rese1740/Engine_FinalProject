@@ -13,6 +13,7 @@ public class PlayerStatus : MonoBehaviour
     public float maxHp;
     public float moveSpeed = 5f;
     public float damage = 5f;
+    public float gold = 0f;
 
     [Header("변수")]
     private Vector2 moveInput;
@@ -53,15 +54,12 @@ public class PlayerStatus : MonoBehaviour
     void Update()
     {
         #region 이동
-        // 입력 받기
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
         moveInput = moveInput.normalized;
 
-        // 애니메이션: 걷기 상태
         animator.SetBool("isMoving", moveInput.magnitude > 0);
 
-        // 방향 전환 처리
         if (moveInput.x > 0 && !facingRight)
         {
             Flip();
@@ -99,7 +97,7 @@ public class PlayerStatus : MonoBehaviour
         StatusTmp[2].text = "MaxHP :" + playerData.maxHp.ToString();
         StatusTmp[3].text = "Damage :" + playerData.damage.ToString();
         StatusTmp[4].text = "Agility :" + playerData.moveSpeed.ToString();
-        StatusTmp[5].text = "Gold :" + playerData.gold.ToString();
+        StatusTmp[5].text = "Gold :" + gold.ToString();
 
 
         #endregion
@@ -108,9 +106,6 @@ public class PlayerStatus : MonoBehaviour
         {
             InventoryUI.gameObject.SetActive(!InventoryUI.activeSelf);
         }
-
-      
-
     }
     void FixedUpdate()
     {
@@ -149,6 +144,7 @@ public class PlayerStatus : MonoBehaviour
         maxHp = playerData.maxHp;
         moveSpeed = playerData.moveSpeed;
         damage = playerData.damage;
+        gold = playerData.luck;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
