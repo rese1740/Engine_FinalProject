@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-
     [Header("Info")]
     private bool trigger = false;
 
