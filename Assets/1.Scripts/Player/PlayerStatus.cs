@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class PlayerStatus : MonoBehaviour
 {
     [Header("PlayerStat")]
+    public static PlayerStatus Instance;
     public PlayerSO playerData;
     public float currentHp;
     public float maxHp;
@@ -45,6 +46,7 @@ public class PlayerStatus : MonoBehaviour
 
     void Start()
     {
+        Instance = this;
         PlayerStatReload();
         currentHp = maxHp;
         rb = GetComponent<Rigidbody2D>();
@@ -93,10 +95,10 @@ public class PlayerStatus : MonoBehaviour
         #region UI
 
         StatusTmp[0].text = playerData.playerName;
-        StatusTmp[1].text = "HP :" +  playerData.currerntHp.ToString();
-        StatusTmp[2].text = "MaxHP :" + playerData.maxHp.ToString();
-        StatusTmp[3].text = "Damage :" + playerData.damage.ToString();
-        StatusTmp[4].text = "Agility :" + playerData.moveSpeed.ToString();
+        StatusTmp[1].text = "HP :" +  currentHp.ToString();
+        StatusTmp[2].text = "MaxHP :" + maxHp.ToString();
+        StatusTmp[3].text = "Damage :" + damage.ToString();
+        StatusTmp[4].text = "Agility :" + moveSpeed.ToString();
         StatusTmp[5].text = "Gold :" + gold.ToString();
 
 
@@ -107,6 +109,24 @@ public class PlayerStatus : MonoBehaviour
             InventoryUI.gameObject.SetActive(!InventoryUI.activeSelf);
         }
     }
+    public void PassiveApply(ItemData item)
+    {
+        if (item == null) return;
+
+        switch (item.PassiveType)
+        {
+            case PassiveType.Str:
+                damage += item.Value; 
+                break;
+            case PassiveType.HP:
+                currentHp += item.Value;
+                break;
+            case PassiveType.Agility:
+                moveSpeed += item.Value;
+                break;
+        }
+    }
+
     void FixedUpdate()
     {
         rb.velocity = moveInput * moveSpeed;

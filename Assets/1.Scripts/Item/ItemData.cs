@@ -22,6 +22,14 @@ public enum SkillType
     Heal
 }
 
+public enum PassiveType
+{
+    None,
+    HP,
+    Str,
+    Agility,
+}
+
 [CreateAssetMenu]
 public class ItemData : ScriptableObject
 {
@@ -29,9 +37,11 @@ public class ItemData : ScriptableObject
     public string ItemID;
     public string ItemName;
     public string description;
+    public float Value;
     public GameObject prefab;
     public Sprite icon;
     public ItemType ItemType;
     public ArtifactType ArtifactType;
     public SkillType SkillType;
+    public PassiveType PassiveType;
 }

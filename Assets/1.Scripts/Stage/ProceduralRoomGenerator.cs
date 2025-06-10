@@ -114,14 +114,36 @@ public class ProceduralRoomGenerator : MonoBehaviour
             ProceduralRoom firstRoom = generatedRooms[0];
             Vector3 centerPos = firstRoom.centerPoint.position;
             player.position = centerPos;
-
-            ProceduralRoom lastRoom = generatedRooms[generatedRooms.Count - 1];
-            Vector3 portalPos = lastRoom.centerPoint.position;
-
-            Instantiate(portalPrefab, portalPos, Quaternion.identity, lastRoom.transform);
+        }
+        ProceduralRoom furthestRoom = FindFurthestRoomFromStart();
+        if (furthestRoom != null)
+        {
+            Instantiate(portalPrefab, furthestRoom.centerPoint.position, Quaternion.identity, furthestRoom.transform);
         }
     }
 
+    ProceduralRoom FindFurthestRoomFromStart()
+    {
+        if (generatedRooms.Count == 0)
+            return null;
+
+        Vector2Int startPos = generatedRooms[0].gridPosition;
+        ProceduralRoom furthestRoom = null;
+        int maxDistance = -1;
+
+        foreach (var room in generatedRooms)
+        {
+            int distance = Mathf.Abs(room.gridPosition.x - startPos.x) + Mathf.Abs(room.gridPosition.y - startPos.y); // Manhattan distance
+
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                furthestRoom = room;
+            }
+        }
+
+        return furthestRoom;
+    }
     void ConnectAllRooms()
     {
         foreach (var room in generatedRooms)
@@ -208,7 +230,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         floorObj.transform.localPosition = Vector3.zero;
 
         Tilemap floorTilemap = floorObj.AddComponent<Tilemap>();
-        floorObj.AddComponent<TilemapRenderer>().sortingOrder = 0;
+        floorObj.AddComponent<TilemapRenderer>().sortingOrder = -2;
 
         GameObject wallObj = new GameObject("Wall");
         wallObj.transform.parent = roomObj.transform;
@@ -216,7 +238,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
         Tilemap wallTilemap = wallObj.AddComponent<Tilemap>();
         TilemapCollider2D WallTilemap = wallTilemap.gameObject.AddComponent<TilemapCollider2D>();
-        wallObj.AddComponent<TilemapRenderer>().sortingOrder = 1;
+        wallObj.AddComponent<TilemapRenderer>().sortingOrder = -1;
 
         GameObject centerObj = new GameObject("Center");
         centerObj.transform.parent = roomObj.transform;

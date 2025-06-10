@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc298456c63fd9409a6f3f729821c17, type: 3}
   m_Name: PlayerSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSO
-  playerName: "\uAE40\uC900\uC720"
+  playerName: "\uAE40\uC900\uC6B0"
   currerntHp: 21
   maxHp: 21
   moveSpeed: 5
   damage: 5
-  gold: 0
+  luck: 0
+  crit: 0.5
+  critDamage: 1.5
+  statPoint: 5
+  passiveItems:
+  - {fileID: 0}
+  - {fileID: 0}
+  activeItem: {fileID: 0}

@@ -29,6 +29,7 @@ public class InventoryUI : MonoBehaviour
             if (playerData.passiveItems[i] != null)
             {
                 passiveSlots[i].SetItem(playerData.passiveItems[i]);
+                PlayerStatus.Instance.PassiveApply(playerData.passiveItems[i]);
             }
         }
 

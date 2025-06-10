@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class PlayerHitBox: MonoBehaviour
+public class PlayerHitBox : MonoBehaviour
 {
+    public PlayerSO playerData;
+    public float critValue;
+    public float critDamage;
     public float damage = 5f;
     public float duration = 0.1f;
 
@@ -18,7 +21,12 @@ public class PlayerHitBox: MonoBehaviour
 
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                float finalDamage = damage;
+                if (critValue <= Random.Range(0, 1))
+                {
+                    finalDamage *= critDamage;
+                }
+                enemy.TakeDamage(finalDamage);
             }
         }
     }

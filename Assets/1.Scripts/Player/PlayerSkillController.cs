@@ -15,7 +15,6 @@ public class PlayerSkillController : MonoBehaviour
     public float healCoolTime;
     public float healValue;
 
-
     [Header("´ë½¬")]
     Rigidbody2D rb;
     Animator animator;
@@ -60,7 +59,6 @@ public class PlayerSkillController : MonoBehaviour
                 DashForward();
                 break;
         }
-
     }
 
     void CastFireball()
