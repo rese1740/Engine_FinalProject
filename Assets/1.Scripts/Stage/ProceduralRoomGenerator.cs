@@ -40,11 +40,6 @@ public class ProceduralRoom : MonoBehaviour
     public Tilemap floorTilemap;
     public Tilemap wallTilemap;
     public Transform centerPoint;
-
-    private void Start()
-    {
-       
-    }
 }
 
 public class ProceduralRoomGenerator : MonoBehaviour
@@ -65,6 +60,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     [Header("Systems")]
     public MinimapManager minimapManager;
     public Transform player;
+    public GameObject portalPrefab;
 
     private List<ProceduralRoom> generatedRooms = new List<ProceduralRoom>();
     private bool[,] gridOccupied;
@@ -79,6 +75,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         ValidateTileSet();
         InitializeGrid();
         GenerateProceduralDungeon();
+        SetupMinimap();
     }
 
     void Update()
@@ -111,6 +108,18 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
 
         Invoke("ConnectAllRooms", 0.2f);
+
+        if (generatedRooms.Count > 0 && player != null)
+        {
+            ProceduralRoom firstRoom = generatedRooms[0];
+            Vector3 centerPos = firstRoom.centerPoint.position;
+            player.position = centerPos;
+
+            ProceduralRoom lastRoom = generatedRooms[generatedRooms.Count - 1];
+            Vector3 portalPos = lastRoom.centerPoint.position;
+
+            Instantiate(portalPrefab, portalPos, Quaternion.identity, lastRoom.transform);
+        }
     }
 
     void ConnectAllRooms()
@@ -385,6 +394,23 @@ public class ProceduralRoomGenerator : MonoBehaviour
             for (int y = yStart; y <= yEnd; y++)
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileSet.floorTile);
         }
+    }
+    void SetupMinimap()
+    {
+        if (minimapManager == null) return;
+
+        List<RoomData> list = new List<RoomData>();
+        foreach (var room in generatedRooms)
+        {
+            list.Add(new RoomData
+            {
+                position = room.gridPosition,
+                roomGO = room.gameObject,
+                isStartRoom = false
+            });
+        }
+
+        minimapManager.CreateMinimap(list);
     }
 
     ProceduralRoom FindRoomAtGridPosition(Vector2Int pos)

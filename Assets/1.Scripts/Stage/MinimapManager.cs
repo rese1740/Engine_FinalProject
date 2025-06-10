@@ -24,7 +24,7 @@ public class MinimapManager : MonoBehaviour
             cell.name = $"MiniCell_{room.position}";
 
             // 셀 위치 조정
-            Vector2 cellPos = new Vector2(room.position.x, room.position.y) * 20f;
+            Vector2 cellPos = new Vector2(room.position.x, room.position.y) * 40f;
             cell.GetComponent<RectTransform>().anchoredPosition = cellPos;
 
             // 초기 색상 (시작/포탈 구분)

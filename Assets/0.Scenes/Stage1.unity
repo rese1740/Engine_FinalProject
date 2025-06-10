@@ -4592,12 +4592,20 @@ MonoBehaviour:
     wallRight: {fileID: 11400000, guid: fdad0f97259e7d04d838dca98f21b0f8, type: 2}
     floorTile: {fileID: 11400000, guid: 0b47a9daa6489d543903fef6ab7a2d98, type: 2}
     floorVariations: []
-  roomTemplates: []
+  roomTemplates:
+  - size: {x: 17, y: 17}
+    doorPositions:
+    - {x: 3, y: 1}
+    - {x: 1, y: 3}
+    obstaclePositions:
+    - {x: 8, y: 8}
+    - {x: 7, y: 7}
   maxRooms: 8
   roomSpacing: 30
   gridSize: {x: 5, y: 5}
-  minimapManager: {fileID: 0}
-  player: {fileID: 0}
+  minimapManager: {fileID: 364741080}
+  player: {fileID: 1996203281}
+  portalPrefab: {fileID: 4628316681187198226, guid: 126b2a2317715134b9f82df869b9966c, type: 3}
 --- !u!1 &1182208502
 GameObject:
   m_ObjectHideFlags: 0
@@ -7145,7 +7153,7 @@ Transform:
   m_GameObject: {fileID: 1996203278}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.6, y: 38.4, z: 0.08318779}
+  m_LocalPosition: {x: -7.5, y: 47.8, z: 0.08318779}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
