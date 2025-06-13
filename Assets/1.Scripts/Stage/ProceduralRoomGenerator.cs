@@ -57,6 +57,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public float roomSpacing = 17f;
     public Vector2Int gridSize = new Vector2Int(5, 5);
 
+    [Header("Bridge Settings")]
+    public int bridgeWidth = 3;
+
     [Header("Systems")]
     public MinimapManager minimapManager;
     public Transform player;
@@ -271,6 +274,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
         return candidates.Count > 0 ? candidates[Random.Range(0, candidates.Count)] : Vector2Int.one * -1;
     }
+    
 
     bool IsValidGridPosition(Vector2Int pos)
     {
@@ -349,11 +353,31 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     void CreateDoor(ProceduralRoom room, Vector2Int doorPos)
     {
-        Vector3Int pos = new Vector3Int(doorPos.x, doorPos.y, 0);
-        room.wallTilemap.SetTile(pos, null);
-        room.floorTilemap.SetTile(pos, tileSet.floorTile);
-        room.activeDoors.Add(doorPos);
+        int halfWidth = bridgeWidth / 2;
+
+        // 방향 판단 (가장자리 기준)
+        bool horizontal = doorPos.y == 0 || doorPos.y == room.template.size.y - 1; // 상하 문
+        bool vertical = doorPos.x == 0 || doorPos.x == room.template.size.x - 1;   // 좌우 문
+
+        for (int offset = -halfWidth; offset <= halfWidth; offset++)
+        {
+            Vector2Int pos;
+            if (horizontal)
+                pos = new Vector2Int(doorPos.x + offset, doorPos.y);
+            else if (vertical)
+                pos = new Vector2Int(doorPos.x, doorPos.y + offset);
+            else
+                pos = doorPos; // 예외: 가운데 등 잘못된 위치일 때
+
+            Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
+            room.wallTilemap.SetTile(tilePos, null);
+            room.floorTilemap.SetTile(tilePos, tileSet.floorTile);
+
+            if (!room.activeDoors.Contains(pos))
+                room.activeDoors.Add(pos);
+        }
     }
+
 
     void CreateConnectionTile(ProceduralRoom roomA, ProceduralRoom roomB, Vector2Int doorA, Vector2Int doorB, Vector2Int direction)
     {
@@ -369,11 +393,28 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Grid grid = bridge.AddComponent<Grid>();
         grid.cellSize = new Vector3(1f, 1f, 0f);
 
-        Tilemap tilemap = bridge.AddComponent<Tilemap>();
-        bridge.AddComponent<TilemapRenderer>().sortingOrder = 0;
+        // 바닥 타일맵
+        GameObject floorObj = new GameObject("BridgeFloor");
+        floorObj.transform.parent = bridge.transform;
+        Tilemap floorMap = floorObj.AddComponent<Tilemap>();
+        floorObj.AddComponent<TilemapRenderer>().sortingOrder = 0;
 
-        PlaceBridgeTiles(tilemap, start, end, direction);
+        // 벽 타일맵
+        GameObject wallObj = new GameObject("BridgeWall");
+        wallObj.transform.parent = bridge.transform;
+        Tilemap wallMap = wallObj.AddComponent<Tilemap>();
+        TilemapRenderer wallRenderer = wallObj.AddComponent<TilemapRenderer>();
+        wallRenderer.sortingOrder = 1;
+
+        // 충돌 설정
+        var collider = wallObj.AddComponent<TilemapCollider2D>();
+        collider.usedByComposite = true;
+        wallObj.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        wallObj.AddComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+
+        PlaceBridgeTiles(floorMap, wallMap, start, end, direction);
     }
+
 
     Vector3 GetBridgeStartPoint(ProceduralRoom room, Vector2Int doorPos, Vector2Int dir)
     {
@@ -395,28 +436,55 @@ public class ProceduralRoomGenerator : MonoBehaviour
         return basePos;
     }
 
-    void PlaceBridgeTiles(Tilemap tilemap, Vector3 start, Vector3 end, Vector2Int dir)
+    void PlaceBridgeTiles(Tilemap floorMap, Tilemap wallMap, Vector3 start, Vector3 end, Vector2Int dir)
     {
-        Vector3Int startCell = tilemap.WorldToCell(start);
-        Vector3Int endCell = tilemap.WorldToCell(end);
+        Vector3Int startCell = floorMap.WorldToCell(start);
+        Vector3Int endCell = floorMap.WorldToCell(end);
+        int halfWidth = bridgeWidth / 2;
 
         if (dir == Vector2Int.right || dir == Vector2Int.left)
         {
             int xStart = Mathf.Min(startCell.x, endCell.x);
             int xEnd = Mathf.Max(startCell.x, endCell.x);
-            int y = startCell.y;
+
             for (int x = xStart; x <= xEnd; x++)
-                tilemap.SetTile(new Vector3Int(x, y, 0), tileSet.floorTile);
+            {
+                for (int offset = -halfWidth - 1; offset <= halfWidth + 1; offset++)
+                {
+                    Vector3Int pos = new Vector3Int(x, startCell.y + offset, 0);
+
+                    if (offset >= -halfWidth && offset <= halfWidth)
+                        floorMap.SetTile(pos, tileSet.floorTile);
+                    else
+                        wallMap.SetTile(pos, tileSet.wallTop);
+                }
+            }
         }
         else if (dir == Vector2Int.up || dir == Vector2Int.down)
         {
             int yStart = Mathf.Min(startCell.y, endCell.y);
             int yEnd = Mathf.Max(startCell.y, endCell.y);
-            int x = startCell.x;
+
             for (int y = yStart; y <= yEnd; y++)
-                tilemap.SetTile(new Vector3Int(x, y, 0), tileSet.floorTile);
+            {
+                for (int offset = -halfWidth - 1; offset <= halfWidth + 1; offset++)
+                {
+                    Vector3Int pos = new Vector3Int(startCell.x + offset, y, 0);
+
+                    if (offset >= -halfWidth && offset <= halfWidth)
+                        floorMap.SetTile(pos, tileSet.floorTile);
+                    else
+                        wallMap.SetTile(pos, tileSet.wallTop);
+                }
+            }
         }
     }
+
+
+
+   
+
+
     void SetupMinimap()
     {
         if (minimapManager == null) return;
