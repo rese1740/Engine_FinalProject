@@ -18,10 +18,15 @@ MonoBehaviour:
   moveSpeed: 5
   damage: 5
   luck: 0
-  crit: 0.5
+  crit: 1.0000001
   critDamage: 1.5
-  statPoint: 5
+  statPoint: 0
   passiveItems:
   - {fileID: 0}
   - {fileID: 0}
   activeItem: {fileID: 0}
+  critGageIndex: 0
+  critDamageGageIndex: 0
+  strGageIndex: 0
+  maxHpGageIndex: 0
+  luckGageIndex: 0

@@ -1325,6 +1325,13 @@ MonoBehaviour:
   cellPrefab: {fileID: 4505487707031500950, guid: 053ad45166bce0a42a604870eecb4701, type: 3}
   defaultColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   highlightColor: {r: 0.992054, g: 1, b: 0, a: 1}
+  prefabList:
+  - type: 0
+    prefab: {fileID: 4505487707031500950, guid: 053ad45166bce0a42a604870eecb4701, type: 3}
+  - type: 2
+    prefab: {fileID: 4505487707031500950, guid: 7071b93d594e1184b8ef752c7d647b96, type: 3}
+  - type: 1
+    prefab: {fileID: 4505487707031500950, guid: f33c86e5c72c8d54fbec09bb754777fa, type: 3}
 --- !u!1001 &379983961
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3109,72 +3116,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 44}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &859039484
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 859039485}
-  - component: {fileID: 859039486}
-  m_Layer: 0
-  m_Name: StageManager (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &859039485
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859039484}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1453377485}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &859039486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859039484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fdb37c6c6b91e34a95a7675f99c0a7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomPrefabs:
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  - {fileID: 543483045593460119, guid: f5e16fdbbe20d324caed5ab54ee9f353, type: 3}
-  startRoomPrefab: {fileID: 543483045593460119, guid: 273934e8b6145584a878d7d00b486760, type: 3}
-  portalRoomPrefab: {fileID: 543483045593460119, guid: 0b8db8d4cc7730f4ba21358268753b35, type: 3}
-  maxRooms: 10
-  roomTileSize: {x: 19, y: 19}
-  tileSize: {x: 1, y: 1}
-  roomSpacing: 2
-  wallDistanceX: 9
-  wallDistanceY: 10
-  openingHalfSize: 2
-  horizontalCorridorPrefab: {fileID: 575191587686585258, guid: 6b9b4f77b04d65743bdad58c14abb77e, type: 3}
-  verticalCorridorPrefab: {fileID: 5690331315199576696, guid: 97b08e6f48001694da619a483adc49c6, type: 3}
-  minimapManager: {fileID: 364741080}
-  player: {fileID: 1996203281}
 --- !u!1 &859817256
 GameObject:
   m_ObjectHideFlags: 0
@@ -4817,19 +4758,38 @@ MonoBehaviour:
     floorTile: {fileID: 11400000, guid: 0b47a9daa6489d543903fef6ab7a2d98, type: 2}
     floorVariations: []
   roomTemplates:
-  - size: {x: 17, y: 17}
-    doorPositions:
-    - {x: 3, y: 1}
-    - {x: 1, y: 3}
-    obstaclePositions:
-    - {x: 8, y: 8}
-    - {x: 7, y: 7}
+  - roomType: 0
+    size: {x: 17, y: 17}
+    doorPositions: []
+    obstaclePositions: []
+  - roomType: 0
+    size: {x: 17, y: 17}
+    doorPositions: []
+    obstaclePositions: []
+  - roomType: 0
+    size: {x: 17, y: 17}
+    doorPositions: []
+    obstaclePositions: []
+  - roomType: 0
+    size: {x: 17, y: 17}
+    doorPositions: []
+    obstaclePositions: []
+  - roomType: 0
+    size: {x: 17, y: 17}
+    doorPositions: []
+    obstaclePositions: []
+  - roomType: 0
+    size: {x: 17, y: 17}
+    doorPositions: []
+    obstaclePositions: []
+  portalPrefab: {fileID: 3691587686896913993, guid: 126b2a2317715134b9f82df869b9966c, type: 3}
+  shopPrefab: {fileID: 1072946573}
   maxRooms: 6
   roomSpacing: 30
   gridSize: {x: 5, y: 5}
+  bridgeWidth: 3
   minimapManager: {fileID: 364741080}
   player: {fileID: 1996203281}
-  portalPrefab: {fileID: 4628316681187198226, guid: 126b2a2317715134b9f82df869b9966c, type: 3}
 --- !u!1 &1182208502
 GameObject:
   m_ObjectHideFlags: 0
@@ -5445,7 +5405,6 @@ Transform:
   - {fileID: 1996203281}
   - {fileID: 364741079}
   - {fileID: 1155803190}
-  - {fileID: 859039485}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1483300201

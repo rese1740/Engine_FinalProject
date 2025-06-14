@@ -20,4 +20,11 @@ public class PlayerSO : ScriptableObject
     public ItemData[] passiveItems = new ItemData[2]; 
     public ItemData activeItem;
 
+    [Header("°­È­")]
+    public int critGageIndex = 0;
+    public int critDamageGageIndex = 0;
+    public int strGageIndex = 0;
+    public int maxHpGageIndex = 0;
+    public int luckGageIndex = 0;
+
 }

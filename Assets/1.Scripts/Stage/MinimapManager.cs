@@ -3,6 +3,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public struct RoomIconPrefab
+{
+    public RoomType type;
+    public GameObject prefab;
+}
+
 public class MinimapManager : MonoBehaviour
 {
     public RectTransform minimapRoot;
@@ -16,26 +23,41 @@ public class MinimapManager : MonoBehaviour
     // ¸ðµç ¹æ ¼¿: position ¡æ ¼¿ ¿ÀºêÁ§Æ®
     private Dictionary<Vector2Int, GameObject> roomIcons = new();
 
+    public List<RoomIconPrefab> prefabList;
+    private Dictionary<RoomType, GameObject> prefabDict;
+    private void Awake()
+    {
+        prefabDict = new();
+        foreach (var entry in prefabList)
+            prefabDict[entry.type] = entry.prefab;
+    }
+
     public void CreateMinimap(List<RoomData> rooms)
     {
         foreach (var room in rooms)
         {
-            GameObject cell = Instantiate(cellPrefab, minimapRoot);
+            var prefab = GetRoomPrefab(room);
+            GameObject cell = Instantiate(prefab, minimapRoot);
             cell.name = $"MiniCell_{room.position}";
 
-            // ¼¿ À§Ä¡ Á¶Á¤
             Vector2 cellPos = new Vector2(room.position.x, room.position.y) * 40f;
             cell.GetComponent<RectTransform>().anchoredPosition = cellPos;
 
-            // ÃÊ±â »ö»ó (½ÃÀÛ/Æ÷Å» ±¸ºÐ)
-            Image img = cell.GetComponent<Image>();
-            if (room.isStartRoom) img.color = Color.green;
-            else if (room.roomGO.name.Contains("Portal")) img.color = Color.red;
-            else img.color = defaultColor;
-
-            // µñ¼Å³Ê¸®¿¡ µî·Ï
             roomIcons[room.position] = cell;
         }
+    }
+
+    private GameObject GetRoomPrefab(RoomData room)
+    {
+        if (room.isStartRoom && prefabDict.TryGetValue(RoomType.Start, out var startPrefab))
+            return startPrefab;
+
+
+        if (prefabDict.TryGetValue(room.roomType, out var prefab))
+            return prefab;
+
+        // fallback
+        return prefabDict[RoomType.Normal];
     }
 
     public void HighlightRoom(Vector2Int pos)

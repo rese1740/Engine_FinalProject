@@ -22,9 +22,28 @@ public class TileSet
     public TileBase[] floorVariations;
 }
 
+public struct RoomData
+{
+    public Vector2Int position;
+    public GameObject roomGO;
+    public bool isStartRoom;
+    public RoomType roomType; // 추가
+}
+
+
+public enum RoomType
+{
+    Normal,
+    Start,
+    Portal,
+    Shop,
+    Hidden
+}
+
 [System.Serializable]
 public class RoomTemplate
 {
+    public RoomType roomType = RoomType.Normal;
     public Vector2Int size = new Vector2Int(17, 17);
     public List<Vector2Int> doorPositions = new List<Vector2Int>();
     public List<Vector2Int> obstaclePositions = new List<Vector2Int>();
@@ -49,6 +68,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     [Header("Room Templates")]
     public List<RoomTemplate> roomTemplates;
+    public GameObject portalPrefab;
+    public GameObject shopPrefab;
 
     [Header("Generation Settings")]
     public int maxRooms = 8;
@@ -63,7 +84,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
     [Header("Systems")]
     public MinimapManager minimapManager;
     public Transform player;
-    public GameObject portalPrefab;
 
     private List<ProceduralRoom> generatedRooms = new List<ProceduralRoom>();
     private bool[,] gridOccupied;
@@ -112,18 +132,56 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
         Invoke("ConnectAllRooms", 0.2f);
 
-        if (generatedRooms.Count > 0 && player != null)
+        AssignSpecialRooms();
+        SetupMinimap();
+
+    }
+    void AssignSpecialRooms()
+    {
+        if (generatedRooms.Count == 0) return;
+
+        ProceduralRoom firstRoom = generatedRooms[0];
+        if (firstRoom == null)
         {
-            ProceduralRoom firstRoom = generatedRooms[0];
-            Vector3 centerPos = firstRoom.centerPoint.position;
-            player.position = centerPos;
+            firstRoom.template.roomType = RoomType.Start;
+            player.transform.position = firstRoom.transform.position;
         }
+
+        // 보스 룸: 가장 먼 방
         ProceduralRoom furthestRoom = FindFurthestRoomFromStart();
         if (furthestRoom != null)
         {
+            furthestRoom.template.roomType = RoomType.Portal;
             Instantiate(portalPrefab, furthestRoom.centerPoint.position, Quaternion.identity, furthestRoom.transform);
         }
+
+        // 상점 룸: 중간쯤에 있는 방
+        if (generatedRooms.Count >= 3)
+        {
+            ProceduralRoom shopRoom = generatedRooms[generatedRooms.Count / 2];
+            shopRoom.template.roomType = RoomType.Shop;
+            Instantiate(shopPrefab, shopRoom.centerPoint.position,Quaternion.identity, shopRoom.transform);
+        }
+
+        // 숨겨진 방: 주변 연결 없는 외곽 방 중 랜덤 1개
+        List<ProceduralRoom> outerRooms = generatedRooms.FindAll(r =>
+        {
+            int neighbors = 0;
+            foreach (var dir in directions)
+            {
+                if (FindRoomAtGridPosition(r.gridPosition + dir) != null)
+                    neighbors++;
+            }
+            return neighbors <= 1;
+        });
+
+        if (outerRooms.Count > 0)
+        {
+            ProceduralRoom hidden = outerRooms[Random.Range(0, outerRooms.Count)];
+            hidden.template.roomType = RoomType.Hidden;
+        }
     }
+
 
     ProceduralRoom FindFurthestRoomFromStart()
     {
@@ -297,6 +355,19 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Vector2Int size = room.template.size;
         GenerateFloor(room.floorTilemap, size);
         GenerateWalls(room.wallTilemap, size);
+
+        switch (room.template.roomType)
+        {
+            case RoomType.Portal:
+                // 보스 타일 배치 or 보스 prefab 생성
+                break;
+            case RoomType.Shop:
+                // 상점 NPC, 상점 아이템 배치
+                break;
+            case RoomType.Hidden:
+                // 안 보이게 하거나 특정 이벤트 후 열리게
+                break;
+        }
     }
 
     void GenerateFloor(Tilemap floorTilemap, Vector2Int size)
@@ -480,11 +551,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
     }
 
-
-
-   
-
-
     void SetupMinimap()
     {
         if (minimapManager == null) return;
@@ -496,12 +562,15 @@ public class ProceduralRoomGenerator : MonoBehaviour
             {
                 position = room.gridPosition,
                 roomGO = room.gameObject,
-                isStartRoom = false
+                isStartRoom = room == generatedRooms[0], // 첫 방이면 시작방
+                roomType = room.template.roomType         // 핵심 추가 부분
             });
         }
 
         minimapManager.CreateMinimap(list);
     }
+
+
 
     ProceduralRoom FindRoomAtGridPosition(Vector2Int pos)
     {
