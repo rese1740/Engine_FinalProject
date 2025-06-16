@@ -34,6 +34,7 @@ public class MinimapManager : MonoBehaviour
 
     public void CreateMinimap(List<RoomData> rooms)
     {
+        Debug.Log(rooms.Count);
         foreach (var room in rooms)
         {
             var prefab = GetRoomPrefab(room);

@@ -49,17 +49,7 @@ public class RoomTemplate
     public List<Vector2Int> obstaclePositions = new List<Vector2Int>();
 }
 
-public class ProceduralRoom : MonoBehaviour
-{
-    public Vector2Int gridPosition;
-    public RoomTemplate template;
-    public List<Vector2Int> activeDoors = new List<Vector2Int>();
 
-    [Header("Components")]
-    public Tilemap floorTilemap;
-    public Tilemap wallTilemap;
-    public Transform centerPoint;
-}
 
 public class ProceduralRoomGenerator : MonoBehaviour
 {
@@ -98,7 +88,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         ValidateTileSet();
         InitializeGrid();
         GenerateProceduralDungeon();
-        SetupMinimap();
     }
 
     void Update()
@@ -140,32 +129,49 @@ public class ProceduralRoomGenerator : MonoBehaviour
     {
         if (generatedRooms.Count == 0) return;
 
-        ProceduralRoom firstRoom = generatedRooms[0];
-        if (firstRoom == null)
+        foreach (var room in generatedRooms)
         {
-            firstRoom.template.roomType = RoomType.Start;
-            player.transform.position = firstRoom.transform.position;
+            room.template.roomType = RoomType.Normal;
         }
 
-        // 보스 룸: 가장 먼 방
+        HashSet<ProceduralRoom> assignedRooms = new HashSet<ProceduralRoom>();
+
+        // 시작 방
+        ProceduralRoom firstRoom = generatedRooms[0];
+        if (firstRoom != null)
+        {
+            Debug.Log("시작방");
+            firstRoom.template.roomType = RoomType.Start;
+            player.transform.position = firstRoom.centerPoint.position;
+            assignedRooms.Add(firstRoom);
+        }
+
+        // 포탈 방
         ProceduralRoom furthestRoom = FindFurthestRoomFromStart();
-        if (furthestRoom != null)
+        if (furthestRoom != null && !assignedRooms.Contains(furthestRoom))
         {
             furthestRoom.template.roomType = RoomType.Portal;
             Instantiate(portalPrefab, furthestRoom.centerPoint.position, Quaternion.identity, furthestRoom.transform);
+            assignedRooms.Add(furthestRoom);
         }
 
-        // 상점 룸: 중간쯤에 있는 방
+        // 상점 방
         if (generatedRooms.Count >= 3)
         {
             ProceduralRoom shopRoom = generatedRooms[generatedRooms.Count / 2];
-            shopRoom.template.roomType = RoomType.Shop;
-            Instantiate(shopPrefab, shopRoom.centerPoint.position,Quaternion.identity, shopRoom.transform);
+            if (!assignedRooms.Contains(shopRoom))
+            {
+                shopRoom.template.roomType = RoomType.Shop;
+                Instantiate(shopPrefab, shopRoom.centerPoint.position, Quaternion.identity, shopRoom.transform);
+                assignedRooms.Add(shopRoom);
+            }
         }
 
-        // 숨겨진 방: 주변 연결 없는 외곽 방 중 랜덤 1개
+        // 이벤트 방 
         List<ProceduralRoom> outerRooms = generatedRooms.FindAll(r =>
         {
+            if (assignedRooms.Contains(r)) return false;
+
             int neighbors = 0;
             foreach (var dir in directions)
             {
@@ -179,8 +185,13 @@ public class ProceduralRoomGenerator : MonoBehaviour
         {
             ProceduralRoom hidden = outerRooms[Random.Range(0, outerRooms.Count)];
             hidden.template.roomType = RoomType.Hidden;
+            assignedRooms.Add(hidden);
         }
+
+      
     }
+
+
 
 
     ProceduralRoom FindFurthestRoomFromStart()
@@ -301,6 +312,14 @@ public class ProceduralRoomGenerator : MonoBehaviour
         TilemapCollider2D WallTilemap = wallTilemap.gameObject.AddComponent<TilemapCollider2D>();
         wallObj.AddComponent<TilemapRenderer>().sortingOrder = -1;
 
+        GameObject doorObj = new GameObject("Door");
+        doorObj.transform.parent = roomObj.transform;
+        doorObj.transform.localPosition = Vector3.zero;
+
+        Tilemap doorTilemap = doorObj.AddComponent<Tilemap>();
+        TilemapCollider2D DoorTilemap = doorTilemap.gameObject.AddComponent<TilemapCollider2D>();
+        doorObj.AddComponent<TilemapRenderer>().sortingOrder = -1;
+
         GameObject centerObj = new GameObject("Center");
         centerObj.transform.parent = roomObj.transform;
         centerObj.transform.localPosition = new Vector3(8.5f, 8.5f, 0f);
@@ -308,6 +327,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         ProceduralRoom roomComponent = roomObj.AddComponent<ProceduralRoom>();
         roomComponent.floorTilemap = floorTilemap;
         roomComponent.wallTilemap = wallTilemap;
+        roomComponent.doorTilemap = doorTilemap;
         roomComponent.centerPoint = centerObj.transform;
 
         return roomObj;
@@ -355,6 +375,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Vector2Int size = room.template.size;
         GenerateFloor(room.floorTilemap, size);
         GenerateWalls(room.wallTilemap, size);
+        GenerateWalls(room.doorTilemap, size);
 
         switch (room.template.roomType)
         {
