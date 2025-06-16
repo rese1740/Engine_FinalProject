@@ -10,6 +10,8 @@ public class PlayerHitBox : MonoBehaviour
 
     void Start()
     {
+        critValue = playerData.luck;
+        critDamage = playerData.critDamage;
         Destroy(gameObject, duration);
     }
 
@@ -18,7 +20,7 @@ public class PlayerHitBox : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyStatus enemy = other.GetComponent<EnemyStatus>();
-
+            Debug.Log(damage);
             if (enemy != null)
             {
                 float finalDamage = damage;
@@ -26,6 +28,7 @@ public class PlayerHitBox : MonoBehaviour
                 {
                     finalDamage *= critDamage;
                 }
+                Debug.Log(finalDamage);
                 enemy.TakeDamage(finalDamage);
             }
         }

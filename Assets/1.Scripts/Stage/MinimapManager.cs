@@ -12,6 +12,7 @@ public struct RoomIconPrefab
 
 public class MinimapManager : MonoBehaviour
 {
+    public static MinimapManager Instance;
     public RectTransform minimapRoot;
     public GameObject cellPrefab;
 
@@ -27,6 +28,7 @@ public class MinimapManager : MonoBehaviour
     private Dictionary<RoomType, GameObject> prefabDict;
     private void Awake()
     {
+        Instance = this;
         prefabDict = new();
         foreach (var entry in prefabList)
             prefabDict[entry.type] = entry.prefab;
@@ -34,7 +36,6 @@ public class MinimapManager : MonoBehaviour
 
     public void CreateMinimap(List<RoomData> rooms)
     {
-        Debug.Log(rooms.Count);
         foreach (var room in rooms)
         {
             var prefab = GetRoomPrefab(room);
@@ -66,7 +67,7 @@ public class MinimapManager : MonoBehaviour
         if (currentHighlight != null)
         {
             Image prevImage = currentHighlight.GetComponent<Image>();
-            if (prevImage != null && !IsSpecialRoomColor(prevImage.color))
+            if (prevImage != null)
                 prevImage.color = defaultColor;
         }
 
@@ -81,8 +82,5 @@ public class MinimapManager : MonoBehaviour
         }
     }
 
-    private bool IsSpecialRoomColor(Color color)
-    {
-        return color == Color.green || color == Color.red;
-    }
+  
 }

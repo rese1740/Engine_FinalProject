@@ -4762,6 +4762,7 @@ MonoBehaviour:
   roomTemplates: []
   portalPrefab: {fileID: 3691587686896913993, guid: 126b2a2317715134b9f82df869b9966c, type: 3}
   shopPrefab: {fileID: 1072946573}
+  roomTrigger: {fileID: 1818027400225741333, guid: f19bcb156ddc1ad40adc9bcbc44920b8, type: 3}
   maxRooms: 6
   roomSpacing: 30
   gridSize: {x: 5, y: 5}
@@ -7290,7 +7291,7 @@ GameObject:
   - component: {fileID: 1996203279}
   - component: {fileID: 1996203282}
   - component: {fileID: 1996203284}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}

@@ -13,8 +13,21 @@ public class RoomTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            
-            room.OnPlayerEnter();
+            switch (room.template.roomType)
+            {
+                case RoomType.Normal:
+                    room.OnPlayerEnter();
+                    MinimapManager.Instance.HighlightRoom(room.gridPosition);
+                    break;
+
+                case RoomType.Portal:
+                case RoomType.Shop:
+                case RoomType.Start:
+                case RoomType.Hidden:
+                    MinimapManager.Instance.HighlightRoom(room.gridPosition);
+                    break;
+
+            }
         }
     }
 }

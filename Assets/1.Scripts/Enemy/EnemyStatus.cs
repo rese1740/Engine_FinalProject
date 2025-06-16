@@ -22,6 +22,7 @@ public class EnemyStatus : MonoBehaviour
     private Animator animator;
     private Rigidbody2D rb;
     private Transform player;
+    private ProceduralRoom room;
 
     private bool isDead = false;
     private float lastAttackTime = -999f;
@@ -33,6 +34,7 @@ public class EnemyStatus : MonoBehaviour
     void Start()
     {
         StatReload();
+        room = GetComponentInParent<ProceduralRoom>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -113,7 +115,6 @@ public class EnemyStatus : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (isDead) return;
-
         currentHp -= damage;
         animator.SetTrigger("Hit");
 
@@ -125,6 +126,7 @@ public class EnemyStatus : MonoBehaviour
 
     void Die()
     {
+        room.enemyCount -= 1;
         isDead = true;
         animator.SetTrigger("Death");
         rb.velocity = Vector2.zero;

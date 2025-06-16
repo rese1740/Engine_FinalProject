@@ -49,8 +49,6 @@ public class RoomTemplate
     public List<Vector2Int> obstaclePositions = new List<Vector2Int>();
 }
 
-
-
 public class ProceduralRoomGenerator : MonoBehaviour
 {
     [Header("Tile Settings")]
@@ -91,11 +89,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         GenerateProceduralDungeon();
     }
 
-    void Update()
-    {
-        UpdatePlayerTracking();
-    }
-
     void ValidateTileSet()
     {
         if (tileSet.floorTile == null)
@@ -126,6 +119,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         SetupMinimap();
 
     }
+
     void AssignSpecialRooms()
     {
         if (generatedRooms.Count == 0) return;
@@ -188,9 +182,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
             hidden.template.roomType = RoomType.Hidden;
             assignedRooms.Add(hidden);
         }
-
-        
-      
     }
 
     ProceduralRoom FindFurthestRoomFromStart()
@@ -204,7 +195,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
         foreach (var room in generatedRooms)
         {
-            int distance = Mathf.Abs(room.gridPosition.x - startPos.x) + Mathf.Abs(room.gridPosition.y - startPos.y); // Manhattan distance
+            int distance = Mathf.Abs(room.gridPosition.x - startPos.x) + Mathf.Abs(room.gridPosition.y - startPos.y); 
 
             if (distance > maxDistance)
             {
@@ -302,7 +293,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         floorObj.transform.localPosition = Vector3.zero;
 
         Tilemap floorTilemap = floorObj.AddComponent<Tilemap>();
-        floorObj.AddComponent<TilemapRenderer>().sortingOrder = -2;
+        floorObj.AddComponent<TilemapRenderer>().sortingOrder = -3;
 
         GameObject wallObj = new GameObject("Wall");
         wallObj.transform.parent = roomObj.transform;
@@ -310,7 +301,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
         Tilemap wallTilemap = wallObj.AddComponent<Tilemap>();
         TilemapCollider2D WallTilemap = wallTilemap.gameObject.AddComponent<TilemapCollider2D>();
-        wallObj.AddComponent<TilemapRenderer>().sortingOrder = -1;
+        wallObj.AddComponent<TilemapRenderer>().sortingOrder = -2;
 
         GameObject doorObj = new GameObject("Door");
         doorObj.transform.parent = roomObj.transform;
@@ -376,19 +367,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         GenerateFloor(room.floorTilemap, size);
         GenerateWalls(room.wallTilemap, size);
         GenerateWalls(room.doorTilemap, size);
-
-        switch (room.template.roomType)
-        {
-            case RoomType.Portal:
-                // 보스 타일 배치 or 보스 prefab 생성
-                break;
-            case RoomType.Shop:
-                // 상점 NPC, 상점 아이템 배치
-                break;
-            case RoomType.Hidden:
-                // 안 보이게 하거나 특정 이벤트 후 열리게
-                break;
-        }
+        Instantiate(roomTrigger, room.centerPoint.position, Quaternion.identity, room.transform);
     }
 
     void GenerateFloor(Tilemap floorTilemap, Vector2Int size)
@@ -470,7 +449,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
     }
 
-
     void CreateConnectionTile(ProceduralRoom roomA, ProceduralRoom roomB, Vector2Int doorA, Vector2Int doorB, Vector2Int direction)
     {
         if (roomSpacing <= 17f) return;
@@ -489,7 +467,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         GameObject floorObj = new GameObject("BridgeFloor");
         floorObj.transform.parent = bridge.transform;
         Tilemap floorMap = floorObj.AddComponent<Tilemap>();
-        floorObj.AddComponent<TilemapRenderer>().sortingOrder = 0;
+        floorObj.AddComponent<TilemapRenderer>().sortingOrder = -2;
 
         // 벽 타일맵
         GameObject wallObj = new GameObject("BridgeWall");
@@ -592,30 +570,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
         
     }
 
-
-
     ProceduralRoom FindRoomAtGridPosition(Vector2Int pos)
     {
         return generatedRooms.Find(r => r.gridPosition == pos);
-    }
-
-
-    void UpdatePlayerTracking()
-    {
-        if (player == null) return;
-        Vector2Int currentPos = GetPlayerGridPosition(player.position);
-        if (currentPos != lastPlayerGridPos)
-        {
-            lastPlayerGridPos = currentPos;
-            minimapManager?.HighlightRoom(currentPos);
-        }
-    }
-
-    public Vector2Int GetPlayerGridPosition(Vector3 worldPos)
-    {
-        int x = Mathf.RoundToInt(worldPos.x / roomSpacing);
-        int y = Mathf.RoundToInt(worldPos.y / roomSpacing);
-        return new Vector2Int(x, y);
     }
 
     Vector2Int CalculateDoorPosition(Vector2Int roomSize, Vector2Int direction)
