@@ -13,6 +13,7 @@ public class RoomTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            
             room.OnPlayerEnter();
         }
     }

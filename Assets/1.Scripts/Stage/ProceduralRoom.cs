@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class ProceduralRoom : MonoBehaviour
 {
+    public RoomType roomType;
     public Vector2Int gridPosition;
     public RoomTemplate template;
     public List<Vector2Int> activeDoors = new List<Vector2Int>();
@@ -21,6 +22,7 @@ public class ProceduralRoom : MonoBehaviour
 
     private void Start()
     {
+        roomType = template.roomType;
         OpenDoors();
     }
     public void OnPlayerEnter()

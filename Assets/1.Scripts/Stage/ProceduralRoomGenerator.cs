@@ -60,6 +60,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public List<RoomTemplate> roomTemplates;
     public GameObject portalPrefab;
     public GameObject shopPrefab;
+    public GameObject roomTrigger;
 
     [Header("Generation Settings")]
     public int maxRooms = 8;
@@ -188,11 +189,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
             assignedRooms.Add(hidden);
         }
 
+        
       
     }
-
-
-
 
     ProceduralRoom FindFurthestRoomFromStart()
     {
@@ -281,6 +280,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         ProceduralRoom room = roomObj.GetComponent<ProceduralRoom>();
         room.gridPosition = gridPos;
         room.template = template;
+        room.roomType = template.roomType;
 
         StartCoroutine(GenerateRoomTilesDelayed(room));
 
@@ -589,6 +589,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
 
         minimapManager.CreateMinimap(list);
+        
     }
 
 
