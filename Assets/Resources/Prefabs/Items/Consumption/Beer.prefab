@@ -10,8 +10,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1367328715001498804, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
       propertyPath: m_Name
-      value: Candy Variant
+      value: Candy
       objectReference: {fileID: 0}
+    - target: {fileID: 3456821617640017685, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f4fb3a310d2b52747b08f41a0510baf2, type: 3}
     - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.0454

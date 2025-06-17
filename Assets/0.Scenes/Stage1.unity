@@ -7255,6 +7255,7 @@ MonoBehaviour:
   damage: 5
   minRadius: 1
   maxRadius: 7
+  isInvisible: 0
   smashHitboxPrefab: {fileID: 3977091141637975862, guid: 433f0624b865ec843958285986e1aa6c, type: 3}
   thrustHitboxPrefab: {fileID: 288729825558513045, guid: c7ad303a249f0f24986c9b5d8d431024, type: 3}
   attackPoint: {fileID: 1667799482}
@@ -7333,6 +7334,14 @@ MonoBehaviour:
   ghost: {fileID: 394284762}
   healCoolTime: 3
   healValue: 0
+  strCoolTime: 0
+  strTime: 0
+  strValue: 0
+  invisibleCoolTime: 0
+  invisibleTime: 0
+  fireballPrefab: {fileID: 4900218066331533875, guid: 5949357432737fc479437622b776fffd, type: 3}
+  firePoint: {fileID: 1667799482}
+  fireballSpeed: 10
 --- !u!1 &2019334672
 GameObject:
   m_ObjectHideFlags: 0

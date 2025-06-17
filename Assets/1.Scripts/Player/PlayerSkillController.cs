@@ -15,7 +15,21 @@ public class PlayerSkillController : MonoBehaviour
     public float healCoolTime;
     public float healValue;
 
-    [Header("대쉬")]
+    [Header("힘")]
+    public float strCoolTime;
+    public float strTime;
+    public float strValue;
+
+    [Header("무적")]
+    public float invisibleCoolTime;
+    public float invisibleTime;
+
+    [Header("파이어볼")]
+    public GameObject fireballPrefab; // 파이어볼 프리팹
+    public Transform firePoint;       // 발사 위치
+    public float fireballSpeed = 10f; // 속도
+
+    [Header("Component")]
     Rigidbody2D rb;
     Animator animator;
     PlayerStatus status;
@@ -58,14 +72,62 @@ public class PlayerSkillController : MonoBehaviour
             case SkillType.Dash:
                 DashForward();
                 break;
+            case SkillType.Invincible:
+                StartInvisible();
+                break;
+            case SkillType.Strength:
+                StartStr();
+                break;
         }
     }
 
     void CastFireball()
     {
+        if (fireballPrefab != null && firePoint != null)
+        {
+            GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
 
+            Rigidbody rb = fireball.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = firePoint.forward * fireballSpeed;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Fireball prefab or firePoint is not assigned.");
+        }
     }
 
+    #region 무적
+    void StartInvisible()
+    {
+        PlayerStatus.Instance.isInvisible = true;
+        Invoke("EndInvisible", invisibleTime);
+    }
+
+    void EndInvisible()
+    {
+        InventoryUI.Instance.maxCoolTime = invisibleCoolTime;
+        PlayerStatus.Instance.isInvisible = false;
+    }
+    #endregion
+
+    #region 힘
+    void StartStr()
+    {
+        PlayerSO.Instance.damage += strValue;
+        Invoke("EndStr", strTime);
+    }
+
+    void EndStr()
+    {
+        InventoryUI.Instance.maxCoolTime = strCoolTime;
+        PlayerSO.Instance.damage -= strValue;
+    }
+    #endregion
+
+    #region 힐
     void HealPlayer()
     {
         InventoryUI.Instance.maxCoolTime = healCoolTime;
@@ -73,14 +135,15 @@ public class PlayerSkillController : MonoBehaviour
         status.playerData.currentHp += healValue;
         animator.SetTrigger("Heal");
     }
+    #endregion
 
+    #region 대쉬
     void DashForward()
     {
         InventoryUI.Instance.maxCoolTime = dashCoolTime;
         StartDash();
     }
 
-    #region 대쉬
     void StartDash()
     {
         moveDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;

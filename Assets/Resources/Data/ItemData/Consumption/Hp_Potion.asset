@@ -16,6 +16,7 @@ MonoBehaviour:
   ItemName: "HP \uD3EC\uC158"
   description: "\uC57D\uAC04 \uB538\uAE30\uB9DB\uC774 \uB098\uB294\uB4EF \uD558\uB2E4"
   Value: 2
+  price: 10
   prefab: {fileID: 5523837162569201164, guid: 96e21cbcb438a844aacaeb136008cc42, type: 3}
   icon: {fileID: 21300000, guid: 80be32502f09e0946b07e98575db1d02, type: 3}
   ItemType: 0

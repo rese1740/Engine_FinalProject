@@ -18,6 +18,7 @@ public class PlayerStatus : MonoBehaviour
     bool facingRight = true;
     public float minRadius = 1f;   // HP 0일 때 최소 반경
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
+    public bool isInvisible = false;
 
     [Header("Combat")]
     public GameObject smashHitboxPrefab;
@@ -153,6 +154,9 @@ public class PlayerStatus : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isInvisible)
+            return;
+        
         playerData.currentHp -= damage;
         playerData.currentHp = Mathf.Max(playerData.currentHp, 0);
     }

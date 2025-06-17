@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac681e384fb332046ab22c64b317819d, type: 3}
-  m_Name: Egg
+  m_Name: Beer
   m_EditorClassIdentifier: 
-  ItemID: 
-  ItemName: "\uB2EC\uAC40"
-  description: 
-  prefab: {fileID: 5523837162569201164, guid: 7a7b832fc001d5f4b88d05d7d15434fe, type: 3}
-  icon: {fileID: 21300000, guid: 67ca7b17166269d46be10a9452f50d44, type: 3}
+  ItemID: ' Beer'
+  ItemName: "\uB9E5\uC8FC"
+  description: "\uD0C4\uC0B0\uC774 \uC788\uB2E4"
+  Value: 7
+  price: 5
+  prefab: {fileID: 5523837162569201164, guid: 8623a368e1fbca949add71879ae67928, type: 3}
+  icon: {fileID: 21300000, guid: 409ab3f8793f7f048973d695aa2f16b9, type: 3}
   ItemType: 0
   ArtifactType: 0
+  SkillType: 0
+  PassiveType: 0

@@ -19,6 +19,20 @@ public class Item : MonoBehaviour
                 Destroy(gameObject);
                 PickupItem();
             }
+            else if (itemData.ItemType == ItemType.consumption)
+            {
+                switch (itemData.ItemID)
+                {
+                    case "Beer":
+                    case "Bread":
+                    case "Hp_Potion":
+                        PlayerSO.Instance.currentHp += itemData.Value;
+                        break;
+                    case "Gold_Box":
+                        PlayerSO.Instance.gold += Random.Range(1, itemData.Value);
+                        break;
+                }
+            }
         }
     }
 
