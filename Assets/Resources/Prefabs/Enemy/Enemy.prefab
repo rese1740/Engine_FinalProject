@@ -140,6 +140,8 @@ MonoBehaviour:
   attackDelay: 0.2
   attackCooldown: 1
   attackHitboxPrefab: {fileID: 7436292051031417179, guid: e19fdffb61c6f4546b3e55e8c6433cba, type: 3}
+  goldPrefab: {fileID: 1994695069352899790, guid: a04481ff1a656c340bdd845514a30501, type: 3}
+  spawnForce: 5
   hitboxSpawnPoint: {fileID: 2329630476537875895}
   isAttacking: 0
 --- !u!95 &8519977172774012356

@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Portal
   - Boss
+  - Coin
   layers:
   - Default
   - TransparentFX

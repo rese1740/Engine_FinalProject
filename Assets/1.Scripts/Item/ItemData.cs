@@ -19,7 +19,9 @@ public enum SkillType
     None,
     Dash,
     Fireball,
-    Heal
+    Heal,
+    Strength,
+    Invincible
 }
 
 public enum PassiveType

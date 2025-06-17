@@ -70,7 +70,7 @@ public class PlayerSkillController : MonoBehaviour
     {
         InventoryUI.Instance.maxCoolTime = healCoolTime;
         Debug.Log("플레이어 체력 회복!");
-        status.currentHp += healValue;
+        status.playerData.currentHp += healValue;
         animator.SetTrigger("Heal");
     }
 

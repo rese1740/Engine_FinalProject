@@ -4,6 +4,7 @@ public class GhostManager : MonoBehaviour
 {
     public GameObject ghostPrefab;
     public float spawnInterval = 0.05f;
+    public float objectScale;
     private float timer;
 
     public bool isGhosting = false;
@@ -39,7 +40,7 @@ public class GhostManager : MonoBehaviour
 
         sr.sprite = playerSprite.sprite;
         sr.flipX = playerSprite.flipX;
-        ghost.transform.localScale = transform.localScale * 1f;
+        ghost.transform.localScale = transform.localScale * objectScale;
 
         Destroy(ghost, 0.5f);
     }

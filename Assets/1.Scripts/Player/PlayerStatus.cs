@@ -10,11 +10,8 @@ public class PlayerStatus : MonoBehaviour
     [Header("PlayerStat")]
     public static PlayerStatus Instance;
     public PlayerSO playerData;
-    public float currentHp;
-    public float maxHp;
     public float moveSpeed = 5f;
     public float damage = 5f;
-    public float gold = 0f;
 
     [Header("º¯¼ö")]
     private Vector2 moveInput;
@@ -48,7 +45,7 @@ public class PlayerStatus : MonoBehaviour
     {
         Instance = this;
         PlayerStatReload();
-        currentHp = maxHp;
+        playerData.currentHp = playerData.maxHp;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -73,7 +70,7 @@ public class PlayerStatus : MonoBehaviour
         #endregion
 
         #region ºû
-        float hpRatio = Mathf.Clamp01((float)currentHp / maxHp);
+        float hpRatio = Mathf.Clamp01((float)playerData.currentHp / playerData.maxHp);
 
         spotLight2D.pointLightOuterRadius = Mathf.Lerp(minRadius, maxRadius, hpRatio);
 
@@ -95,11 +92,11 @@ public class PlayerStatus : MonoBehaviour
         #region UI
 
         StatusTmp[0].text = playerData.playerName;
-        StatusTmp[1].text = "HP :" +  currentHp.ToString();
-        StatusTmp[2].text = "MaxHP :" + maxHp.ToString();
-        StatusTmp[3].text = "Damage :" + damage.ToString();
-        StatusTmp[4].text = "Agility :" + moveSpeed.ToString();
-        StatusTmp[5].text = "Gold :" + gold.ToString();
+        StatusTmp[1].text = "HP :" +  playerData.currentHp.ToString();
+        StatusTmp[2].text = "MaxHP :" + playerData.maxHp.ToString();
+        StatusTmp[3].text = "Damage :" + playerData.damage.ToString();
+        StatusTmp[4].text = "Agility :" + playerData.moveSpeed.ToString();
+        StatusTmp[5].text = "Gold :" + playerData.gold.ToString();
 
 
         #endregion
@@ -119,7 +116,7 @@ public class PlayerStatus : MonoBehaviour
                 damage += item.Value; 
                 break;
             case PassiveType.HP:
-                currentHp += item.Value;
+                playerData.currentHp += item.Value;
                 break;
             case PassiveType.Agility:
                 moveSpeed += item.Value;
@@ -155,16 +152,14 @@ public class PlayerStatus : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHp -= damage;
-        currentHp = Mathf.Max(currentHp, 0);
+        playerData.currentHp -= damage;
+        playerData.currentHp = Mathf.Max(playerData.currentHp, 0);
     }
 
     void PlayerStatReload()
     {
-        maxHp = playerData.maxHp;
         moveSpeed = playerData.moveSpeed;
         damage = playerData.damage;
-        gold = playerData.luck;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -174,6 +169,11 @@ public class PlayerStatus : MonoBehaviour
             int StageIndex = SceneManager.GetActiveScene().buildIndex;
             int NextStageIndex = StageIndex += 1;
             SceneManager.LoadScene(NextStageIndex);
+        }
+        else if (other.CompareTag("Coin"))
+        {
+            playerData.gold += 1;
+            Destroy(other.gameObject);
         }
     }
 

@@ -79,8 +79,18 @@ public class MinimapManager : MonoBehaviour
                 img.color = highlightColor;
                 currentHighlight = icon;
             }
+
+            // 중심 위치로 이동
+            Vector2 centerOffset = -icon.GetComponent<RectTransform>().anchoredPosition;
+
+            foreach (var kvp in roomIcons)
+            {
+                RectTransform rt = kvp.Value.GetComponent<RectTransform>();
+                rt.anchoredPosition += centerOffset;
+            }
         }
     }
 
-  
+
+
 }

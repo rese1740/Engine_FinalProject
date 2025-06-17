@@ -1639,6 +1639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 7858520752913709727, guid: 39ad6dd708bd9c341902010f38252acd, type: 3}
   spawnInterval: 0.05
+  objectScale: 5
   isGhosting: 0
 --- !u!212 &394284763
 SpriteRenderer:
@@ -3783,7 +3784,7 @@ Transform:
   m_GameObject: {fileID: 1072946573}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 97.416, y: 68.0876, z: 0}
+  m_LocalPosition: {x: 94.6, y: 52.7, z: 0}
   m_LocalScale: {x: 0.9296512, y: 0.41708028, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7234,11 +7235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 04772c1f898843d49bd6634ae0b0507e, type: 2}
-  currentHp: 10
-  maxHp: 10
   moveSpeed: 5
   damage: 5
-  gold: 0
   minRadius: 1
   maxRadius: 7
   smashHitboxPrefab: {fileID: 3977091141637975862, guid: 433f0624b865ec843958285986e1aa6c, type: 3}

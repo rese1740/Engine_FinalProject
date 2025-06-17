@@ -15,6 +15,8 @@ public class EnemyStatus : MonoBehaviour
     public float attackDelay = 0.2f;
     public float attackCooldown = 1f;
     public GameObject attackHitboxPrefab; 
+    public GameObject goldPrefab;
+    public float spawnForce = 5f;
 
     public Transform hitboxSpawnPoint; 
 
@@ -124,12 +126,49 @@ public class EnemyStatus : MonoBehaviour
         }
     }
 
+
+    private void SpawnGold()
+    {
+        int goldCount = Random.Range(1, enemyData.goldReward + 1);
+
+        for (int i = 0; i < goldCount; i++)
+        {
+            GameObject gold = Instantiate(goldPrefab, transform.position, Quaternion.identity);
+
+            Rigidbody2D rb = gold.GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                // 튀어나갈 방향 계산
+                Vector2 direction = GetRandomDirection();
+                rb.AddForce(direction * spawnForce, ForceMode2D.Impulse);
+
+            }
+        }
+    }
+    private Vector2 GetRandomDirection()
+    {
+        Vector2[] directions = new Vector2[]
+        {
+            Vector2.left,
+            Vector2.right,
+            new Vector2(-1, 1).normalized,
+            new Vector2(1, 1).normalized,
+            new Vector2(-0.5f, 1).normalized,
+            new Vector2(0.5f, 1).normalized
+        };
+
+        return directions[Random.Range(0, directions.Length)];
+    }
+
     void Die()
     {
         room.enemyCount -= 1;
         isDead = true;
         animator.SetTrigger("Death");
         rb.velocity = Vector2.zero;
+        SpawnGold();
+
 
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
