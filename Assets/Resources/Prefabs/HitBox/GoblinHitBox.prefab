@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6660196938032233039}
   - component: {fileID: 1340587318484263184}
   - component: {fileID: 5817819401073795057}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GoblinHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

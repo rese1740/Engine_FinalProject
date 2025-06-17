@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8470969769802336213}
   - component: {fileID: 2028715790795804074}
   - component: {fileID: 7682601999655051387}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ThrustHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

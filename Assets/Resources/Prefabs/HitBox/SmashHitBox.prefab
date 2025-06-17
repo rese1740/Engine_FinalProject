@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4228955081545598319}
   - component: {fileID: 2462547647234566117}
   - component: {fileID: 4062054102557946421}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SmashHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
