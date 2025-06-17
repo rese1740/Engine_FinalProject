@@ -16,7 +16,8 @@ MonoBehaviour:
   ItemName: "\uBD88\uC758 \uC815\uB839"
   description: "\uD30C\uC774\uC5B4\uBCFC\uC744 \uB0A0\uB9B4\uC218 \uC788\uAC8C \uB41C\uB2E4"
   Value: 0
-  prefab: {fileID: 5523837162569201164, guid: 9a9b2b2991216c749a5170f72b7f5a52, type: 3}
+  price: 0
+  prefab: {fileID: 5523837162569201164, guid: dc253c0d6e5de2748854c9947a99f015, type: 3}
   icon: {fileID: 21300000, guid: c6d7dd78702f2804a832d46e3ceaff07, type: 3}
   ItemType: 1
   ArtifactType: 1

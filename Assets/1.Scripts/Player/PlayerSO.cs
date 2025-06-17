@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PlayerSO : ScriptableObject
 {
+    public static PlayerSO Instance;
     [Header("Info")]
     public string playerName;
     public float currentHp = 0f;
@@ -28,4 +29,8 @@ public class PlayerSO : ScriptableObject
     public int maxHpGageIndex = 0;
     public int luckGageIndex = 0;
 
+    public void Init()
+    {
+        Instance = this;
+    }
 }

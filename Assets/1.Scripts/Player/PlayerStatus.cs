@@ -43,6 +43,7 @@ public class PlayerStatus : MonoBehaviour
 
     void Start()
     {
+       playerData.Init();
         Instance = this;
         PlayerStatReload();
         playerData.currentHp = playerData.maxHp;

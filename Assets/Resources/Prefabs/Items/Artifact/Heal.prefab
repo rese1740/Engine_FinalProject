@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Heal
       objectReference: {fileID: 0}
+    - target: {fileID: 2309242418419294418, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_Radius
+      value: 0.30748314
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309242418419294418, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.009108186
+      objectReference: {fileID: 0}
     - target: {fileID: 3456821617640017685, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -20,6 +28,14 @@ PrefabInstance:
       propertyPath: itemData
       value: 
       objectReference: {fileID: 11400000, guid: 4676790984d71544088b0460f745d76e, type: 2}
+    - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.0454

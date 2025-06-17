@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Invincible
       objectReference: {fileID: 0}
+    - target: {fileID: 2309242418419294418, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_Radius
+      value: 0.27135617
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309242418419294418, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.019795418
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309242418419294418, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.029693156
+      objectReference: {fileID: 0}
     - target: {fileID: 3456821617640017685, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -20,6 +32,14 @@ PrefabInstance:
       propertyPath: itemData
       value: 
       objectReference: {fileID: 11400000, guid: 909377570c3875f4c810453c1dcfe9ad, type: 2}
+    - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6789369535428187313, guid: a4e4bad0596292546b23b116a9f34081, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.0454
