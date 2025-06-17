@@ -20,7 +20,6 @@ public class PlayerHitBox : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyStatus enemy = other.GetComponent<EnemyStatus>();
-            Debug.Log(damage);
             if (enemy != null)
             {
                 float finalDamage = damage;
@@ -30,6 +29,20 @@ public class PlayerHitBox : MonoBehaviour
                 }
                 Debug.Log(finalDamage);
                 enemy.TakeDamage(finalDamage);
+            }
+        }
+        else if (other.CompareTag("Boss"))
+        {
+            BossController enemy = other.GetComponent<BossController>();
+            Debug.Log(damage);
+            if (enemy != null)
+            {
+                float finalDamage1 = damage;
+                if (critValue <= Random.Range(0, 1))
+                {
+                    finalDamage1 *= critDamage;
+                }
+                enemy.TakeDamage(finalDamage1);
             }
         }
     }

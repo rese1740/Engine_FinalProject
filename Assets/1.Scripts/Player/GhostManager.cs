@@ -39,7 +39,7 @@ public class GhostManager : MonoBehaviour
 
         sr.sprite = playerSprite.sprite;
         sr.flipX = playerSprite.flipX;
-        ghost.transform.localScale = transform.localScale * 5f;
+        ghost.transform.localScale = transform.localScale * 1f;
 
         Destroy(ghost, 0.5f);
     }
