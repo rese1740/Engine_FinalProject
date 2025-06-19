@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: PlayerSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSO
   playerName: "\uAE40\uC900\uC6B0"
-  currerntHp: 21
+  currentHp: 21
   maxHp: 21
   moveSpeed: 5
   damage: 5
   luck: 0
   crit: 1.1999999
   critDamage: 1.5
+  gold: 456
   statPoint: 51
   passiveItems:
   - {fileID: 0}
