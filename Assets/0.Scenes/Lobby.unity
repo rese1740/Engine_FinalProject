@@ -2883,10 +2883,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   critGageImg: {fileID: 1937997707}
-  critDamageGageImg: {fileID: 0}
-  strGageImg: {fileID: 0}
-  maxHpGageImg: {fileID: 0}
-  luckGageImg: {fileID: 0}
+  critDamageGageImg: {fileID: 1056862425}
+  strGageImg: {fileID: 2046872477}
+  maxHpGageImg: {fileID: 800224048}
+  luckGageImg: {fileID: 372811101}
   Gage:
   - {fileID: 21300000, guid: 6b86244fd2755c04abe23f4335736030, type: 3}
   - {fileID: 21300000, guid: 87f96d61795d3cf4c8e80602f79adce2, type: 3}

@@ -19,6 +19,7 @@ public class PlayerStatus : MonoBehaviour
     public float minRadius = 1f;   // HP 0일 때 최소 반경
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
     public bool isInvisible = false;
+    private bool isDie = false;
 
     [Header("Combat")]
     public GameObject smashHitboxPrefab;
@@ -36,6 +37,9 @@ public class PlayerStatus : MonoBehaviour
 
     [Header("Managers")]
     public ProceduralRoomGenerator stageManager;
+    public CameraZoom cameraZoom;
+    public DataBaseManager dataBaseManager;
+    public UIManager uiManager;
 
     [Header("Component")]
     public Light2D spotLight2D;
@@ -45,6 +49,7 @@ public class PlayerStatus : MonoBehaviour
     void Start()
     {
        playerData.Init();
+        dataBaseManager.Init();
         Instance = this;
         PlayerStatReload();
         playerData.currentHp = playerData.maxHp;
@@ -159,7 +164,38 @@ public class PlayerStatus : MonoBehaviour
         
         playerData.currentHp -= damage;
         playerData.currentHp = Mathf.Max(playerData.currentHp, 0);
+
+        if(playerData.currentHp <= 0)
+        {
+          PlayerDie();
+        }
     }
+
+    void PlayerDie()
+    {
+
+        if (isDie) return; 
+
+       
+        switch (DataBaseManager.Instance.currenStage)
+        {
+            case int n when (n >= 1 && n <= 10):
+                playerData.statPoint += 1;
+                break;
+            case int n when (n >= 11 && n <= 20):
+                playerData.statPoint += 3;
+                break;
+            case int n when (n >= 21 && n <= 30):
+                playerData.statPoint += 5;
+                break;
+        }
+        isDie = true;
+        cameraZoom.ZoomInOnPlayer();
+        uiManager.ShowGameOver();
+        animator.SetTrigger("Death");
+        //죽음 로직
+    }
+    
 
     void PlayerStatReload()
     {
@@ -173,6 +209,7 @@ public class PlayerStatus : MonoBehaviour
         {
             int StageIndex = SceneManager.GetActiveScene().buildIndex;
             int NextStageIndex = StageIndex += 1;
+            DataBaseManager.Instance.currenStage++;
             SceneManager.LoadScene(NextStageIndex);
         }
         else if (other.CompareTag("Coin"))

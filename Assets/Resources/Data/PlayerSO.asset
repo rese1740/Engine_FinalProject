@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSO
   playerName: "\uAE40\uC900\uC6B0"
-  currentHp: 21
+  currentHp: 0
   maxHp: 21
   moveSpeed: 5
   damage: 5
