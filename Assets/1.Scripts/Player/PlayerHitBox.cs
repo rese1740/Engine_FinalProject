@@ -10,7 +10,7 @@ public class PlayerHitBox : MonoBehaviour
 
     void Start()
     {
-        critValue = playerData.luck;
+        critValue = playerData.gold;
         critDamage = playerData.critDamage;
         Destroy(gameObject, duration);
     }

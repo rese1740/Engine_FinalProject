@@ -74,7 +74,7 @@ public class PlayerUpgradeManager : MonoBehaviour
     {
         if (playerData.statPoint >= 1 && GageIndex <= 9)
         {
-            playerData.luck += 1;
+            playerData.gold += 1;
             playerData.statPoint -= 1;
         }
 

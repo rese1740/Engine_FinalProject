@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 [System.Serializable]
 public class SaveData
 {
@@ -20,9 +22,54 @@ public class SaveData
 
 public class LoginManager : MonoBehaviour
 {
+    public TMP_InputField idInputField;
+
+    public PlayerSO playerData;
+
+    public void OnLoginButtonClick()
+    {
+        string inputID = idInputField.text;
+
+        if (string.IsNullOrEmpty(inputID))
+        {
+            Debug.LogWarning("ID is empty!");
+            return;
+        }
+
+        SaveData data = LoadByID(inputID);
+
+        if (data == null)
+        {
+            // 새로운 플레이어 생성
+            data = new SaveData
+            {
+                ID = inputID,
+                playerName = inputID,
+                maxHp = 15f,
+                currentHp = 15f,
+                moveSpeed = 5f,
+                damage = 5f,
+                crit = 0.3f,
+                critDamage = 1.5f,
+                gold = 0,
+                statPoint = 0
+            };
+
+            SaveByID(data);
+            Debug.Log($"New player '{inputID}' created and saved.");
+        }
+        else
+        {
+            Debug.Log($"Loaded existing player: {data.playerName}");
+        }
+
+        // 이후 PlayerStatus 등에 데이터 적용
+        // PlayerStatus.Instance.LoadFromSaveData(data);
+    }
+
     public void SaveByID(SaveData data)
     {
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true); 
         string path = Application.persistentDataPath + $"/save_{data.ID}.json";
         File.WriteAllText(path, json);
     }
@@ -39,7 +86,6 @@ public class LoginManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Save file with ID '{id}' not found.");
             return null;
         }
     }
