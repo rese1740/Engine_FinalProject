@@ -1424,6 +1424,8 @@ MonoBehaviour:
     prefab: {fileID: 4505487707031500950, guid: f33c86e5c72c8d54fbec09bb754777fa, type: 3}
   - type: 3
     prefab: {fileID: 4505487707031500950, guid: 5a62d80741e32094ebf21beb57a1f451, type: 3}
+  - type: 4
+    prefab: {fileID: 4505487707031500950, guid: cd1892527b3a20341bab58a5b8ecd8a3, type: 3}
 --- !u!1 &382146571
 GameObject:
   m_ObjectHideFlags: 0
@@ -7600,6 +7602,7 @@ MonoBehaviour:
   minRadius: 1
   maxRadius: 7
   isInvisible: 0
+  isDie: 0
   smashHitboxPrefab: {fileID: 3977091141637975862, guid: 433f0624b865ec843958285986e1aa6c, type: 3}
   thrustHitboxPrefab: {fileID: 288729825558513045, guid: c7ad303a249f0f24986c9b5d8d431024, type: 3}
   attackPoint: {fileID: 1667799482}

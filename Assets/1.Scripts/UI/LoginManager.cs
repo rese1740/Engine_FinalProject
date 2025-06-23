@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 [System.Serializable]
 public class SaveData
@@ -72,6 +73,7 @@ public class LoginManager : MonoBehaviour
         string json = JsonUtility.ToJson(data, true); 
         string path = Application.persistentDataPath + $"/save_{data.ID}.json";
         File.WriteAllText(path, json);
+        SceneManager.LoadScene("Lobby");
     }
 
     public SaveData LoadByID(string id)
@@ -82,6 +84,7 @@ public class LoginManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
+            SceneManager.LoadScene("Lobby");
             return data;
         }
         else
