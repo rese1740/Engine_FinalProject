@@ -69,7 +69,7 @@ public class BossController : MonoBehaviour
 
     void HandleIdle()
     {
-        if (Vector2.Distance(transform.position, player.position) < chaseRange)
+        if (Vector2.Distance(transform.position, player.position) < chaseRange && !PlayerStatus.Instance.isDie)
             ChangeState(BossState.Chase);
     }
 
@@ -78,7 +78,7 @@ public class BossController : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         rb.velocity = direction * chaseSpeed;
 
-        if (Vector2.Distance(transform.position, player.position) < attackRange)
+        if (Vector2.Distance(transform.position, player.position) < attackRange && !PlayerStatus.Instance.isDie)
         {
             rb.velocity = Vector2.zero;
             ChangeState(BossState.Attack);

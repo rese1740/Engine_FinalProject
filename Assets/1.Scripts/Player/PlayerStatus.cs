@@ -19,14 +19,12 @@ public class PlayerStatus : MonoBehaviour
     public float minRadius = 1f;   // HP 0일 때 최소 반경
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
     public bool isInvisible = false;
-    private bool isDie = false;
+    public bool isDie = false;
 
     [Header("Combat")]
     public GameObject smashHitboxPrefab;
     public GameObject thrustHitboxPrefab;
     public Transform attackPoint;
-
-
     public float attackDamage = 5f;
     public float thrustDamage = 8f;
 
@@ -34,6 +32,7 @@ public class PlayerStatus : MonoBehaviour
     [Header("UI")]
     public GameObject InventoryUI;
     public TextMeshProUGUI[] StatusTmp;
+    public GameObject PlayerUI;
 
     [Header("Managers")]
     public ProceduralRoomGenerator stageManager;
@@ -190,9 +189,12 @@ public class PlayerStatus : MonoBehaviour
                 break;
         }
         isDie = true;
+        this.enabled = false;
+        PlayerUI.SetActive(false);
         cameraZoom.ZoomInOnPlayer();
         uiManager.ShowGameOver();
         animator.SetTrigger("Death");
+ 
         //죽음 로직
     }
     

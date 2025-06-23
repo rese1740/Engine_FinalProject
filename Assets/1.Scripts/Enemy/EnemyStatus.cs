@@ -14,11 +14,11 @@ public class EnemyStatus : MonoBehaviour
     public float attackRange = 1.5f;
     public float attackDelay = 0.2f;
     public float attackCooldown = 1f;
-    public GameObject attackHitboxPrefab; 
+    public GameObject attackHitboxPrefab;
     public GameObject goldPrefab;
     public float spawnForce = 5f;
 
-    public Transform hitboxSpawnPoint; 
+    public Transform hitboxSpawnPoint;
 
     [Header("Components")]
     private Animator animator;
@@ -53,14 +53,17 @@ public class EnemyStatus : MonoBehaviour
             case EnemyState.Chasing:
                 if (distanceToPlayer <= attackRange)
                 {
-                    animator.SetBool("move", false);
-                    currentState = EnemyState.Attacking;
-                    rb.velocity = Vector2.zero;
-                    StartCoroutine(AttackAfterDelay());
+                    if (!PlayerStatus.Instance.isDie)
+                    {
+                        animator.SetBool("move", false);
+                        currentState = EnemyState.Attacking;
+                        rb.velocity = Vector2.zero;
+                        StartCoroutine(AttackAfterDelay());
+                    }
                 }
                 else
                 {
-                    animator.SetBool("move",true);
+                    animator.SetBool("move", true);
                     Vector2 dir = (player.position - transform.position).normalized;
                     rb.velocity = dir * moveSpeed;
 
@@ -92,7 +95,7 @@ public class EnemyStatus : MonoBehaviour
         isAttacking = true;
         yield return new WaitForSeconds(attackDelay);
 
-        animator.SetTrigger("Attack"); 
+        animator.SetTrigger("Attack");
         lastAttackTime = Time.time;
     }
 
