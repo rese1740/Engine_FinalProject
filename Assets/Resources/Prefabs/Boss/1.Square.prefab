@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 6837481218804142750}
   - component: {fileID: 4977853579373134445}
   m_Layer: 8
-  m_Name: Square
+  m_Name: 1.Square
   m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

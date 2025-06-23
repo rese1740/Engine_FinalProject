@@ -20,6 +20,7 @@ public class PlayerStatus : MonoBehaviour
     public float maxRadius = 5f;   // HP 최대일 때 최대 반경
     public bool isInvisible = false;
     public bool isDie = false;
+    public bool isControlLocked = false;
 
     [Header("Combat")]
     public GameObject smashHitboxPrefab;
@@ -58,6 +59,8 @@ public class PlayerStatus : MonoBehaviour
 
     void Update()
     {
+        if (isControlLocked) return;
+
         #region 이동
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
@@ -154,6 +157,16 @@ public class PlayerStatus : MonoBehaviour
     {
         GameObject hitbox = Instantiate(thrustHitboxPrefab, attackPoint.position, Quaternion.identity);
         hitbox.GetComponent<PlayerHitBox>().damage = thrustDamage;
+    }
+
+    public void StartDance()
+    {
+        animator.SetBool("isDancing", true);
+    }
+
+    public void StopDance()
+    {
+        animator.SetBool("isDancing", false);
     }
 
     public void TakeDamage(float damage)
