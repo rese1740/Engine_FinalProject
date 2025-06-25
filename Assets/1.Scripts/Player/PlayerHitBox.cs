@@ -43,7 +43,7 @@ public class PlayerHitBox : MonoBehaviour
         else if (other.CompareTag("Boss2"))
         {
             MagicBoss enemy = other.GetComponent<MagicBoss>();
-            if (enemy != null)
+            if (enemy != null && !PlayerStatus.Instance.isControlLocked)
             {
                 Debug.Log("Boss2 Hit");
                 enemy.TakeDamage();

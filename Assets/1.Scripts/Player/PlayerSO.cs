@@ -7,6 +7,7 @@ public class PlayerSO : ScriptableObject
 {
     public static PlayerSO Instance;
     [Header("Info")]
+    public string ID; // 플레이어 ID
     public string playerName;
     public float currentHp = 0f;
     public float maxHp = 0f; //플레이어 MaxHP
