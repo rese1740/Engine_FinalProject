@@ -59,6 +59,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public GameObject portalPrefab;
     public GameObject shopPrefab;
     public GameObject roomTrigger;
+    public GameObject[] Hidden;
 
     [Header("Generation Settings")]
     public int maxRooms = 8;
@@ -180,6 +181,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         {
             ProceduralRoom hidden = outerRooms[Random.Range(0, outerRooms.Count)];
             hidden.template.roomType = RoomType.Hidden;
+            Instantiate(Hidden[Random.Range(0, Hidden.Length)], hidden.centerPoint.position, Quaternion.identity, hidden.transform);
             assignedRooms.Add(hidden);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum BossState
@@ -35,11 +36,13 @@ public class BossController : MonoBehaviour
     [Header("Component")]
     public Slider bossHPSlider;
     private Rigidbody2D rb;
+    private Animator animator;
     private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
     }
@@ -75,8 +78,20 @@ public class BossController : MonoBehaviour
 
     void HandleChase()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
+        Vector2 direction = (player.position - transform.position);
+
+        if (direction == Vector2.zero) return;
+
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            direction = new Vector2(Mathf.Sign(direction.x), 0);
+        else
+            direction = new Vector2(0, Mathf.Sign(direction.y));
+
         rb.velocity = direction * chaseSpeed;
+
+        animator.SetFloat("moveX", direction.x);
+        animator.SetFloat("moveY", direction.y);
+        animator.SetBool("isCharging", isDashing);
 
         if (Vector2.Distance(transform.position, player.position) < attackRange && !PlayerStatus.Instance.isDie)
         {
@@ -147,7 +162,16 @@ public class BossController : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("보스가 죽었습니다.");
+        int StageIndex = SceneManager.GetActiveScene().buildIndex;
+        int NextStageIndex = StageIndex += 1;
+        DataBaseManager.Instance.currenStage++;
+
+        int curretStage = PlayerPrefs.GetInt("curretStage", 0);
+
+        curretStage++;
+
+        PlayerPrefs.SetInt("curretStage", curretStage);
         Destroy(gameObject);
+        SceneManager.LoadScene(NextStageIndex);
     }
 }

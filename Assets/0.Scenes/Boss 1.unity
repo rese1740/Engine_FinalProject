@@ -976,15 +976,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.380503, b: 0.380503, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -6550432720726904964, guid: 1e8ffb2f21a909b46bb2883ddb8a7b21, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1977,10 +1977,14 @@ PrefabInstance:
     - target: {fileID: 6308493582850208379, guid: 6ded84e8befb18e42a7ca44abac01047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1261087937}
     - target: {fileID: 6308493582850208379, guid: 6ded84e8befb18e42a7ca44abac01047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: ReStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308493582850208379, guid: 6ded84e8befb18e42a7ca44abac01047, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6535796100032869366, guid: 6ded84e8befb18e42a7ca44abac01047, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3169,10 +3173,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC0BC\uAC01\uD615"
+  m_text: "\uB9C8\uBC95\uC0AC"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4063443a2d9e3bb4d8f6e9e4d3ac802e, type: 2}
-  m_sharedMaterial: {fileID: -5798663736072212000, guid: 4063443a2d9e3bb4d8f6e9e4d3ac802e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 77e569b8f6372e9499ae7cdd07543bea, type: 2}
+  m_sharedMaterial: {fileID: -346449043650714087, guid: 77e569b8f6372e9499ae7cdd07543bea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4208,6 +4212,10 @@ MonoBehaviour:
   bulletCount: 5
   spreadAngle: 45
   attack2Interval: 5
+  homingPrefab: {fileID: 5444940082762524327, guid: 10437221772b45e49adf3922abb1d1ad, type: 3}
+  homingSpeed: 2
+  homingDuration: 5
+  attack3Interval: 8
 --- !u!50 &877371816
 Rigidbody2D:
   serializedVersion: 4
@@ -4264,7 +4272,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -7589,15 +7597,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6085736671657559080, guid: 6119f52e1327e7142ace21eddd69fe50, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

@@ -84,7 +84,7 @@ public class ProceduralRoom : MonoBehaviour
             {
                 int index = Random.Range(0, validSpawnPositions.Count);
                 Vector3 spawnPos = validSpawnPositions[index];
-                validSpawnPositions.RemoveAt(index); // 같은 위치 중복 방지
+                validSpawnPositions.RemoveAt(index); 
 
                 Instantiate(prefab, spawnPos, Quaternion.identity,gameObject.transform);
                 enemyCount++;

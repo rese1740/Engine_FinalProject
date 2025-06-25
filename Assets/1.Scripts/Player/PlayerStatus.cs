@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -48,11 +47,10 @@ public class PlayerStatus : MonoBehaviour
 
     void Start()
     {
-       playerData.Init();
+        playerData.Init();
         dataBaseManager.Init();
         Instance = this;
         PlayerStatReload();
-        playerData.currentHp = playerData.maxHp;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -101,7 +99,7 @@ public class PlayerStatus : MonoBehaviour
         #region UI
 
         StatusTmp[0].text = playerData.playerName;
-        StatusTmp[1].text = "HP :" +  playerData.currentHp.ToString();
+        StatusTmp[1].text = "HP :" + playerData.currentHp.ToString();
         StatusTmp[2].text = "MaxHP :" + playerData.maxHp.ToString();
         StatusTmp[3].text = "Damage :" + playerData.damage.ToString();
         StatusTmp[4].text = "Agility :" + playerData.moveSpeed.ToString();
@@ -122,7 +120,7 @@ public class PlayerStatus : MonoBehaviour
         switch (item.PassiveType)
         {
             case PassiveType.Str:
-                damage += item.Value; 
+                damage += item.Value;
                 break;
             case PassiveType.HP:
                 playerData.currentHp += item.Value;
@@ -173,23 +171,23 @@ public class PlayerStatus : MonoBehaviour
     {
         if (isInvisible)
             return;
-        
+
         playerData.currentHp -= damage;
         playerData.currentHp = Mathf.Max(playerData.currentHp, 0);
 
-        if(playerData.currentHp <= 0)
+        if (playerData.currentHp <= 0)
         {
-          PlayerDie();
+            PlayerDie();
         }
     }
 
     void PlayerDie()
     {
 
-        if (isDie) return; 
+        if (isDie) return;
+        int curretStage = PlayerPrefs.GetInt("curretStage", 0);
 
-       
-        switch (DataBaseManager.Instance.currenStage)
+        switch (curretStage)
         {
             case int n when (n >= 1 && n <= 10):
                 playerData.statPoint += 1;
@@ -207,10 +205,8 @@ public class PlayerStatus : MonoBehaviour
         cameraZoom.ZoomInOnPlayer();
         uiManager.ShowGameOver();
         animator.SetTrigger("Death");
- 
-        //Á×À½ ·ÎÁ÷
     }
-    
+
 
     void PlayerStatReload()
     {
@@ -225,6 +221,13 @@ public class PlayerStatus : MonoBehaviour
             int StageIndex = SceneManager.GetActiveScene().buildIndex;
             int NextStageIndex = StageIndex += 1;
             DataBaseManager.Instance.currenStage++;
+
+            int curretStage = PlayerPrefs.GetInt("curretStage", 0);
+
+            curretStage++;
+
+            PlayerPrefs.SetInt("curretStage", curretStage);
+
             SceneManager.LoadScene(NextStageIndex);
         }
         else if (other.CompareTag("Coin"))

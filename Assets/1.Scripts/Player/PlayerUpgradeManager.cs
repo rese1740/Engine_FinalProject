@@ -82,7 +82,24 @@ public class PlayerUpgradeManager : MonoBehaviour
 
     public void GameStart()
     {
+        int curretStage = PlayerPrefs.GetInt("curretStage", 0);
+
+        curretStage = 0;
+
+        PlayerPrefs.SetInt("curretStage", curretStage);
+        
+        playerData.currentHp = playerData.maxHp;
         SceneManager.LoadScene("Stage1");
+    }
+
+    public void Boss1()
+    {
+        SceneManager.LoadScene("Boss");
+    }
+
+    public void Boss2()
+    {
+        SceneManager.LoadScene("Boss1");
     }
 
     void GageReload(Image gageImg, int index)
