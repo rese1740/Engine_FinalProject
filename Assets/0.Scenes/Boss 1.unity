@@ -19217,11 +19217,11 @@ MonoBehaviour:
   ghost: {fileID: 394284762}
   healCoolTime: 3
   healValue: 0
-  strCoolTime: 0
-  strTime: 0
-  strValue: 0
-  invisibleCoolTime: 0
-  invisibleTime: 0
+  strCoolTime: 5
+  strTime: 5
+  strValue: 5
+  invisibleCoolTime: 5
+  invisibleTime: 5
   fireballPrefab: {fileID: 0}
   firePoint: {fileID: 0}
   fireballSpeed: 10
