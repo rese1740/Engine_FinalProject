@@ -114,7 +114,6 @@ public class EnemyStatus : MonoBehaviour
     {
         maxHp = enemyData.maxHp;
         currentHp = maxHp;
-        moveSpeed = enemyData.moveSpeed;
     }
 
     public void TakeDamage(float damage)
@@ -166,6 +165,7 @@ public class EnemyStatus : MonoBehaviour
 
     void Die()
     {
+        Destroy(gameObject, 2f);
         room.enemyCount -= 1;
         isDead = true;
         animator.SetTrigger("Death");
@@ -176,6 +176,5 @@ public class EnemyStatus : MonoBehaviour
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        Destroy(gameObject, 2f);
     }
 }

@@ -63,7 +63,7 @@ public class LoginManager : MonoBehaviour
                 damage = 5f,
                 crit = 0.3f,
                 critDamage = 1.5f,
-                gold = 0,
+                gold = 5,
                 statPoint = 0,
 
                 critGageIndex = 0,  
@@ -82,7 +82,7 @@ public class LoginManager : MonoBehaviour
         }
 
         ApplyToPlayerData(data);
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void SaveByID(SaveData data)

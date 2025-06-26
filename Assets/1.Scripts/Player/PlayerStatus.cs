@@ -107,6 +107,25 @@ public class PlayerStatus : MonoBehaviour
 
 
         #endregion
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            playerData.currentHp = playerData.maxHp;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            playerData.statPoint += 50;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            SceneManager.LoadScene("Lobby");
+        }
 
         if (Input.GetKeyDown(KeyCode.V))
         {
@@ -185,7 +204,7 @@ public class PlayerStatus : MonoBehaviour
     {
 
         if (isDie) return;
-        int curretStage = PlayerPrefs.GetInt("curretStage", 0);
+        int curretStage = PlayerPrefs.GetInt("curretStage", 1);
 
         switch (curretStage)
         {
@@ -222,7 +241,7 @@ public class PlayerStatus : MonoBehaviour
             int NextStageIndex = StageIndex += 1;
             DataBaseManager.Instance.currenStage++;
 
-            int curretStage = PlayerPrefs.GetInt("curretStage", 0);
+            int curretStage = PlayerPrefs.GetInt("curretStage", 1);
 
             curretStage++;
 

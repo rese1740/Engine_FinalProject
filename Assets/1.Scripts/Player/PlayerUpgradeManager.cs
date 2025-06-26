@@ -82,7 +82,7 @@ public class PlayerUpgradeManager : MonoBehaviour
 
     public void GameStart()
     {
-        int curretStage = PlayerPrefs.GetInt("curretStage", 0);
+        int curretStage = PlayerPrefs.GetInt("curretStage", 1);
 
         curretStage = 0;
 

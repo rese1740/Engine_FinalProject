@@ -9,7 +9,10 @@ public class Item : MonoBehaviour
     [Header("Component")]
     public ItemData itemData;
     public TextMeshProUGUI titleTxt;
-
+    private void Start()
+    {
+        ReloadUI();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && trigger)
